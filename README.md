@@ -34,14 +34,7 @@ It provides quick links to important tools and resources for both **teachers** a
 
 ---
 
-## 🚀 Hosting on GitHub Pages
-
-1. Create a new repository on GitHub named `guinhub` (or any name you like).  
-2. Upload `ek.html` and your logo if needed.  
-3. In **Repository Settings → Pages**,  
-   - Source: `main` branch  
-   - Folder: `/ (root)`  
-4. Rename `ek.html` to `index.html` for GitHub Pages to load it automatically.  
-
-Your site will be live at:
+## 🚀 Hosting on GitHub Pages 
+Latest version of the site is live at:
+https://mrg-stack.github.io/guinhub/
 
