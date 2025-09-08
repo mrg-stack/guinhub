@@ -14,8 +14,8 @@
   <style>
     body {
       font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
-      background-color: #f8edca;
-      color: #0038A8;
+      background-color: #59a8b3;
+      color: #1437a2;
       margin: 0;
       padding: 0;
       position: relative;
@@ -39,8 +39,8 @@
     }
 
     header {
-      background: #0038A8;
-      color: #f8edca;
+      background: #1437a2;
+      color: #59a8b3;
       padding: 30px 40px;
       text-align: left;
     }
@@ -70,9 +70,9 @@
 
     h2 {
       margin-top: 50px;
-      color: #0038A8;
+      color: #1437a2;
       font-weight: 700;
-      border-bottom: 3px solid #0038A822;
+      border-bottom: 3px solid #1437a222;
       padding-bottom: 6px;
       font-size: 1.5em;
     }
@@ -90,7 +90,7 @@
       padding: 20px;
       text-align: center;
       text-decoration: none;
-      color: #0038A8;
+      color: #1437a2;
       font-weight: 600;
       box-shadow: 0 3px 8px rgba(0,0,0,0.05);
       transition: all 0.2s ease-in-out;
@@ -106,7 +106,7 @@
     }
 
     .link-card:hover {
-      background: #0038A8;
+      background: #1437a2;
       color: white;
       transform: translateY(-3px);
     }
@@ -132,7 +132,7 @@
 
     .search-form button {
       padding: 0.7rem 1.2rem;
-      background-color: #0038A8;
+      background-color: #1437a2;
       color: white;
       border: none;
       border-radius: 8px;
@@ -154,10 +154,10 @@
       text-align: center;
       padding: 20px 10px;
       font-size: 0.9em;
-      color: #0038A8;
+      color: #1437a2;
       margin-top: 50px;
-      background-color: #f8edca;
-      border-top: 2px solid #0038A822;
+      background-color: #59a8b3;
+      border-top: 2px solid #1437a222;
       min-height: 40px;
     }
 
@@ -179,22 +179,31 @@
 
 <header>
   <div style="display:flex; justify-content:space-between; align-items:center;">
-    <!-- Left side: Title + Slogan -->
     <div>
-      <h1 style="margin:0; font-size:3em; font-weight:700; letter-spacing:0.5px; line-height:1.2;">
-        GUINhub
-      </h1>
-      <p style="font-size:1.2em; margin-top:10px; opacity:0.85; font-style:italic; line-height:1.4;">
-        Din genvej til alt ØKonomi & IT
-      </p>
+      <h1>GUINhub</h1>
+      <p>Din genvej til alt ØKonomi & IT</p>
     </div>
-    
-    <!-- Right side: Er det fredag -->
     <div style="text-align:right;">
-      <h2 style="margin:0; font-size:1.2em; font-weight:400; color:#f8edca;">Er det fredag?</h2>
-      <h2 id="answer" style="margin:5px 0 0 0; font-size:2em; font-weight:700; color:#f8edca;">-</h2>
+      <p id="last-updated" style="font-size:0.8em; margin:0; opacity:0.8;"></p>
     </div>
   </div>
+  <script>
+    function formatDate(d) {
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const hh = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}-${hh}:${min}`;
+    }
+
+    const updatedElem = document.getElementById('last-updated');
+    if (updatedElem) {
+      // Use document.lastModified to get file's last modified timestamp
+      const d = new Date(document.lastModified);
+      updatedElem.textContent = `Last updated: ${formatDate(d)}`;
+    }
+  </script>
 </header>
 
 <!-- Search box script (focuses cursor on load) -->
