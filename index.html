@@ -69,12 +69,21 @@
     }
 
     h2 {
-      margin-top: 50px;
+      margin-top: 30px;
       color: #1437a2;
       font-weight: 700;
       border-bottom: 3px solid #1437a222;
       padding-bottom: 6px;
       font-size: 1.5em;
+    }
+
+    h3 {
+      margin-top: 10px;
+      color: #1437a2;
+      font-weight: 700;
+      border-bottom: 2px solid #1437a222;
+      padding-bottom: 4px;
+      font-size: 1.2em;
     }
 
     .link-grid {
@@ -138,10 +147,10 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 1em;       /* Match link-card text size */
+      font-size: 1em;
       display: flex;
       align-items: center;
-      gap: 6px;             /* Space between icon and text */
+      gap: 6px;
       transition: background 0.2s;
     }
 
@@ -173,6 +182,53 @@
     .corner-logo:hover {
       opacity: 1;
     }
+
+    /* Collapsible sections */
+    .collapsible-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .collapsible-header {
+      cursor: pointer;
+    }
+
+    /* E25 A/B two aligned columns */
+    .e25-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+      margin-top: 20px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    /* vertical separator line */
+    .e25-columns::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: #1437a222;
+    }
+
+    .e25-column h3 {
+      margin-top: 0;
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+    }
+
+    @media (max-width: 700px) {
+      .e25-columns {
+        grid-template-columns: 1fr;
+      }
+      .e25-columns::before {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -187,7 +243,247 @@
       <p id="last-updated" style="font-size:0.8em; margin:0; opacity:0.8;"></p>
     </div>
   </div>
-  <script>
+</header>
+
+<main>
+  <!-- Search Section -->
+  <form action="https://duckduckgo.com/" method="get" class="search-form" target="_blank">
+    <input type="text" name="q" placeholder="Søg med DuckDuckGo..." required autofocus>
+    <button type="submit">Søg</button>
+  </form>
+
+  <!-- Teacher Resources -->
+  <h2>Underviser</h2>
+  <div class="link-grid">
+    <a href="https://ek.itslearning.com/CourseCards" 
+      target="_blank" rel="noopener noreferrer" class="link-card">
+      <i class="bi bi-mortarboard"></i> Itslearning
+    </a>
+    <a href="https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT" 
+      target="_blank" class="link-card">
+      <i class="bi bi-folder-symlink"></i> ØKIT SharePoint
+    </a>
+    <a href="https://outlook.office.com/mail/" 
+      target="_blank" class="link-card">
+      <i class="bi bi-envelope"></i> Outlook (Web)
+    </a>
+    <a href="https://europe.wiseflow.net/assessor/"
+      target="_blank" class="link-card">
+      <i class="bi bi-check2-circle"></i> WISEflow
+    </a>
+    <a href="https://ek-dk.topdesk.net/tas/public/ssp/"
+      target="_blank" class="link-card">
+      <i class="bi bi-tools"></i> Service Portal
+    </a>
+    <a href="https://ums.ek.dk/loggedin/default.aspx"
+      target="_blank" class="link-card">
+      <i class="bi bi-person-badge"></i> UMS
+    </a>
+    <a href="https://studieordninger.kea.dk/2025/37/227"
+      target="_blank" class="link-card">
+      <i class="bi bi-rulers"></i> Studieordning 
+    </a>
+    <a href="https://forms.office.com"
+      target="_blank" class="link-card">
+      <i class="bi bi-ui-checks-grid"></i> MS Forms (feedback)
+    </a>
+  </div>
+
+  <!-- Tools -->
+  <h2>Værktøjer</h2>
+  <div class="link-grid">      
+    <a href="https://chatgpt.com" target="_blank" class="link-card">
+      <i class="bi bi-robot"></i> ChatGPT
+    </a>
+    <a href="https://papercut.ek.dk" target="_blank" class="link-card">
+      <i class="bi bi-printer"></i> PaperCut (webprint)
+    </a>      
+    <a href="https://www.ek.dk/media/o5ehwkxm/ek-designguide.pdf" target="_blank" class="link-card">
+      <i class="bi bi-palette"></i> Design Guide
+    </a>
+  </div>
+
+  <!-- HR -->
+  <h2>HR</h2>
+  <div class="link-grid">
+    <a href="https://sdbf.dk/ek" target="_blank" class="link-card">
+      <i class="bi bi-bank"></i> SDBF
+    </a>
+    <a href="https://www.innomate.com/INNOMATE/DataUI/pass.aspx" target="_blank" class="link-card">
+      <i class="bi bi-person-bounding-box"></i> Innomate (HR)
+    </a>
+    <a href="https://cloud.timeedit.net/kea/web/1/" target="_blank" class="link-card">
+      <i class="bi bi-calendar-week"></i> TimeEdit
+    </a>
+    <a href="https://ek.mtime.dk/Registration" target="_blank" class="link-card">
+      <i class="bi bi-calendar2-check"></i> mTime
+    </a>
+    <a href="https://intra.ek.dk" target="_blank" class="link-card">
+      <i class="bi bi-building"></i> EK Intranet
+    </a>      
+  </div>
+  <!-- F25: collapsible, OPEN by default -->
+  <h2 class="collapsible-header" data-target="f25-content">
+    2. Sem ØKIT-GBG-F25
+  </h2>
+  <div id="f25-content" class="collapsible-content">
+    <div class="link-grid">
+      <a href="https://ek.itslearning.com/plans/courses/7110/topics/22748" 
+        target="_blank" rel="noopener noreferrer" class="link-card">
+        <i class="bi bi-1-circle"></i> Forløb 2.1
+      </a>
+      <a href="https://ek.itslearning.com/plans/courses/7110/topics/22749" 
+        target="_blank" rel="noopener noreferrer" class="link-card">
+        <i class="bi bi-2-circle"></i> Forløb 2.2
+      </a>
+      <a href="https://ek.itslearning.com/plans/courses/7110/topics/22750" 
+        target="_blank" rel="noopener noreferrer" class="link-card">
+        <i class="bi bi-3-circle"></i> Forløb 2.3
+      </a>
+      <a href="https://ek.itslearning.com/plans/courses/7110/topics/22751" 
+        target="_blank" rel="noopener noreferrer" class="link-card">
+        <i class="bi bi-4-circle"></i> Forløb 2.4
+      </a>
+      <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_F25_Grupper.xlsx"
+        class="link-card">
+        <i class="bi bi-people"></i> Gruppeark (Desktop)
+      </a>
+      <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_F25_Vejledning.xlsm" 
+        target="_blank" class="link-card">
+        <i class="bi bi-journal-text"></i> Vejledningsark (Desktop)
+      </a>
+      <a href="https://erhvervsakademikbenhavn.sharepoint.com/:f:/r/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efter%C3%A5r/2.%20semester?csf=1&web=1&e=SynlkP"
+        target="_blank" class="link-card">
+        <i class="bi bi-folder-symlink"></i> SharePoint 2. Sem
+      </a>
+          <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_E2025_GuinArk.xlsm"
+      class="link-card">
+      <i class="bi bi-file-earmark-spreadsheet"></i> GUINark (Desktop)
+    </a>
+      <a href="msteams://teams.microsoft.com/l/team/19%3AIP9OaiOtMaAE9EHmMG0PO6mtjmixxkLRPCIZhMnJwJQ1%40thread.tacv2/conversations?groupId=b0f523cc-df8f-496b-9f49-8c18e5b18793&tenantId=9aafd452-b819-40a3-a400-f94ff33b0125"
+        target="_blank" class="link-card">
+        <i class="bi bi-microsoft-teams"></i> Teams (Desktop)
+      </a>
+      <a href="https://outlook.office.com/mail/deeplink/compose?to=cllj@ek.dk,jean@ek.dk,ulpe@ek.dk,jenr@ek.dk,guin@ek.dk"
+        target="_blank" rel="noopener noreferrer" class="link-card">
+        <i class="bi bi-envelope-plus"></i> Skriv team
+      </a>
+      <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-f25@stud.kea.dk,cllj@ek.dk,jean@ek.dk,ulpe@ek.dk,jenr@ek.dk,guin@ek.dk"
+        target="_blank" rel="noopener noreferrer" class="link-card">
+        <i class="bi bi-envelope-plus"></i> Skriv klassen
+      </a>
+    </div>
+  </div>
+
+  <!-- E25: collapsible, collapsed by default -->
+  <h2 class="collapsible-header" data-target="e25-content">
+    2. Sem ØKIT-GBG-E25 (WORK IN PROGRESS)
+  </h2>
+  <div id="e25-content" class="collapsible-content">
+    <div class="link-grid">
+      <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2026.1%20For%C3%A5r/2.%20semester/_Planning/%C3%98KIT_GBG_F26_GuinArk.xlsm"
+         class="link-card">
+        <i class="bi bi-file-earmark-spreadsheet"></i> GUINark (Desktop)
+      </a>
+      <a href="https://outlook.office.com/mail/deeplink/compose?to=cllj@ek.dk,jean@ek.dk,jame@ek.dk,jenr@ek.dk,guin@ek.dk,beni@ek.dk,mokj@ek.dk"
+         target="_blank" rel="noopener noreferrer" class="link-card">
+        <i class="bi bi-envelope-plus"></i> Skriv team
+      </a>
+    </div>
+
+    <div class="e25-columns">
+      <!-- E25A column -->
+      <div class="e25-column">
+        <h3>Hold A</h3>
+        <div class="link-grid">
+          <a href="https://ek.itslearning.com/plans/courses/7334/topics/" 
+            target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-1-circle"></i> Forløb 2.1
+          </a>
+          <a href="https://ek.itslearning.com/plans/courses/7334/topics/" 
+            target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-2-circle"></i> Forløb 2.2
+          </a>
+          <a href="https://ek.itslearning.com/plans/courses/7334/topics/" 
+            target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-3-circle"></i> Forløb 2.3
+          </a>
+          <a href="https://ek.itslearning.com/plans/courses/7334/topics/" 
+            target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-4-circle"></i> Forløb 2.4
+          </a>
+          <a href="msteams://teams.microsoft.com/l/team/19%3Aym4VztG2ZCNqkz8rKsQ_yLGtWLt8qbIzZZ6pHq2HenU1%40thread.tacv2/conversations?groupId=09126325-0d4b-43c1-bca9-23283c1b9578&tenantId=9aafd452-b819-40a3-a400-f94ff33b0125"
+             target="_blank" class="link-card">
+            <i class="bi bi-microsoft-teams"></i> Teams (E25A)
+          </a>
+          <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-e25a@stud.kea.dk,cllj@ek.dk,jean@ek.dk,jame@ek.dk,jenr@ek.dk,guin@ek.dk,beni@ek.dk,mokj@ek.dk"
+             target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-envelope-plus"></i> Skriv hold A
+          </a>
+          <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_F25_Grupper.xlsx"
+             class="link-card">
+            <i class="bi bi-people"></i> Gruppeark
+          </a>
+          <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_F25_Vejledning.xlsm" 
+             target="_blank" class="link-card">
+            <i class="bi bi-journal-text"></i> Vejledningsark
+          </a>
+        </div>
+      </div>
+
+      <!-- E25B column -->
+      <div class="e25-column">
+        <h3>Hold B</h3>
+        <div class="link-grid">
+          <a href="https://ek.itslearning.com/plans/courses/7384/topics/" 
+            target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-1-circle"></i> Forløb 2.1
+          </a>
+          <a href="https://ek.itslearning.com/plans/courses/7384/topics/" 
+            target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-2-circle"></i> Forløb 2.2
+          </a>
+          <a href="https://ek.itslearning.com/plans/courses/7384/topics/" 
+            target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-3-circle"></i> Forløb 2.3
+          </a>
+          <a href="https://ek.itslearning.com/plans/courses/7384/topics/" 
+            target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-4-circle"></i> Forløb 2.4
+          </a>
+          <a href="msteams://teams.microsoft.com/l/team/19%3Aym4VztG2ZCNqkz8rKsQ_yLGtWLt8qbIzZZ6pHq2HenU1%40thread.tacv2/conversations?groupId=09126325-0d4b-43c1-bca9-23283c1b9578&tenantId=9aafd452-b819-40a3-a400-f94ff33b0125"
+             target="_blank" class="link-card">
+            <i class="bi bi-microsoft-teams"></i> Teams (E25B)
+          </a>
+          <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-e25b@stud.kea.dk,cllj@ek.dk,jean@ek.dk,jame@ek.dk,jenr@ek.dk,guin@ek.dk,beni@ek.dk,mokj@ek.dk"
+             target="_blank" rel="noopener noreferrer" class="link-card">
+            <i class="bi bi-envelope-plus"></i> Skriv hold B
+          </a>
+          <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_F25_Grupper.xlsx"
+             class="link-card">
+            <i class="bi bi-people"></i> Gruppeark
+          </a>
+          <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_F25_Vejledning.xlsm" 
+             target="_blank" class="link-card">
+            <i class="bi bi-journal-text"></i> Vejledningsark
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</main>
+
+<footer>
+  &copy; 2025 
+  <a href="mailto:guin@ek.dk">guin@ek.dk</a> – Erhvervsakademi København
+  <img src="https://www.ek.dk/media/ixcclve3/ek_logo_business-blue_rgb.png" alt="EK Logo" class="corner-logo">
+</footer>
+
+<script>
+  // Last updated text in header
+  (function () {
     function formatDate(d) {
       const yyyy = d.getFullYear();
       const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -199,186 +495,37 @@
 
     const updatedElem = document.getElementById('last-updated');
     if (updatedElem) {
-      // Use document.lastModified to get file's last modified timestamp
       const d = new Date(document.lastModified);
       updatedElem.textContent = `Last updated: ${formatDate(d)}`;
     }
-  </script>
-</header>
+  })();
 
-<!-- Search box script (focuses cursor on load) -->
-<!-- <script>
-function isitFriday() {
-    var d = new Date();
-    var elem = document.getElementById("answer");
-    if (!elem) return;
-    elem.textContent = (d.getDay() === 5) ? "Ja" : "Nej";
-}
-document.addEventListener("DOMContentLoaded", isitFriday);
-</script> -->
+  // Collapsibles (E25 + F25), with F25 open by default
+  document.addEventListener('DOMContentLoaded', () => {
+    const headers = document.querySelectorAll('.collapsible-header');
 
-  
-  <main>
-    <!-- Search Section -->
-    <h2>Søg på nettet</h2>
-    <form action="https://duckduckgo.com/" method="get" class="search-form" target="_blank">
-      <input type="text" name="q" placeholder="Søg med DuckDuckGo..." required autofocus>
-      <button type="submit">Søg</button>
-    </form>
+    headers.forEach(header => {
+      const targetId = header.dataset.target;
+      const content = document.getElementById(targetId);
+      if (!content) return;
 
+      header.addEventListener('click', () => {
+        const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+        if (isOpen) {
+          content.style.maxHeight = '0px';
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      });
+    });
 
-    <!-- Teacher Resources -->
-    <h2>Underviser</h2>
-    <div class="link-grid">
-      <a href="https://ek.itslearning.com/CourseCards" 
-        target="_blank" rel="noopener noreferrer" class="link-card"><i class="bi bi-mortarboard"></i> Itslearning
-      </a>
-      <a href="https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT" 
-        target="_blank" class="link-card"><i class="bi bi-folder-symlink"></i> ØKIT SharePoint
-      </a>
-      <a href="https://outlook.office.com/mail/" 
-        target="_blank" class="link-card"><i class="bi bi-envelope"></i> Outlook (Web)
-      </a>
-      <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_E2025_GuinArk.xlsm"
-        class="link-card"><i class="bi bi-file-earmark-spreadsheet"></i> GUINark (Desktop)
-      </a>
-      <a href="https://europe.wiseflow.net/assessor/"
-        target="_blank" class="link-card"><i class="bi bi-check2-circle"></i> WISEflow
-      </a>
-      <a href="https://ek-dk.topdesk.net/tas/public/ssp/"
-        target="_blank" class="link-card"><i class="bi bi-tools"></i> Service Portal
-      </a>
-      <a href="https://ums.ek.dk/loggedin/default.aspx"
-        target="_blank" class="link-card"><i class="bi bi-person-badge"></i> UMS
-      </a>
-      <a href="https://studieordninger.kea.dk/2025/37/227"
-        target="_blank" class="link-card"><i class="bi bi-rulers"></i> Studieordning 
-      </a>
-      <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/:x:/s/TeamkonomiogITkoordinering/EdR6w56Om7JHuTPMcpwZLtgBLrfNRDTjG1DfhGeCE8ftSQ?e=YIozWU"
-        target="_blank" class="link-card"><i class="bi bi-calendar3"></i> Mødekalender
-      </a>
-      <a href="https://forms.office.com"
-        target="_blank" class="link-card"><i class="bi bi-ui-checks-grid"></i>  MS Forms (feedback)
-      </a>
-    </div>
+    // F25 should be visible on load
+    const f25 = document.getElementById('f25-content');
+    if (f25) {
+      f25.style.maxHeight = f25.scrollHeight + 'px';
+    }
+  });
+</script>
 
-    <!-- Tools -->
-    <h2>Værktøjer</h2>
-    <div class="link-grid">      
-      <a href="https://chatgpt.com" target="_blank" class="link-card">
-        <i class="bi bi-robot"></i> ChatGPT
-      </a>
-       <a href="https://papercut.ek.dk" target="_blank" class="link-card">
-        <i class="bi bi-printer"></i> PaperCut (webprint)
-      </a>      
-       <a href="https://www.ek.dk/media/o5ehwkxm/ek-designguide.pdf" target="_blank" class="link-card">
-        <i class="bi bi-palette"></i> Design Guide
-      </a>
-    </div>
-
-    <!-- HR -->
-    <h2>HR</h2>
-    <div class="link-grid">
-      <a href="https://sdbf.dk/ek" target="_blank" class="link-card">
-        <i class="bi bi-bank"></i> SDBF
-      </a>
-      <a href="https://www.innomate.com/INNOMATE/DataUI/pass.aspx" target="_blank" class="link-card">
-        <i class="bi bi-person-bounding-box"></i> Innomate (HR)
-      </a>
-      <a href="https://cloud.timeedit.net/kea/web/1/" target="_blank" class="link-card">
-        <i class="bi bi-calendar-week"></i> TimeEdit
-      </a>
-      <a href="https://ek.mtime.dk/Registration" target="_blank" class="link-card">
-        <i class="bi bi-calendar2-check"></i> mTime
-      </a>
-       <a href="https://intra.ek.dk" target="_blank" class="link-card">
-        <i class="bi bi-building"></i> EK Intranet
-      </a>      
-    </div>
-
-    <!-- E25 -->
-  <h2>2. Sem ØKIT-GBG-E26</h2>
-    <div class="link-grid">
-      <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2026.1%20For%C3%A5r/2.%20semester/_Planning/%C3%98KIT_GBG_F26_GuinArk.xlsm"
-         class="link-card">
-      <i class="bi bi-file-earmark-spreadsheet"></i> GUINark (Desktop)
-    </a>
-      <!-- Mail to Team (Outlook Web only) -->
-    <a href="https://outlook.office.com/mail/deeplink/compose?to=cllj@ek.dk,jean@ek.dk,jame@ek.dk,jenr@ek.dk,guin@ek.dk,beni@ek.dk,mokj@ek.dk"
-        target="_blank" rel="noopener noreferrer" class="link-card">
-      <i class="bi bi-envelope-plus"></i> Skriv team
-    </a>
-      <!-- Mail to Class (Outlook Web only) -->
-    <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-e26a@stud.kea.dk,okit-gbg-e26b@stud.kea.dk,cllj@ek.dk,jean@ek.dk,jame@ek.dk,jenr@ek.dk,guin@ek.dk,beni@ek.dk,mokj@ek.dk"
-        target="_blank" rel="noopener noreferrer" class="link-card">
-      <i class="bi bi-envelope-plus"></i> Skriv klassen
-    </a>
-      <!-- Teams Desktop -->
-      <a href="msteams://teams.microsoft.com/l/team/19%3Aym4VztG2ZCNqkz8rKsQ_yLGtWLt8qbIzZZ6pHq2HenU1%40thread.tacv2/conversations?groupId=09126325-0d4b-43c1-bca9-23283c1b9578&tenantId=9aafd452-b819-40a3-a400-f94ff33b0125
-"
-        target="_blank" class="link-card"><i class="bi bi-microsoft-teams"></i> Teams (Desktop)
-      </a>
-    </div>
-
-     <!-- F25 -->
-    <h2>2. Sem ØKIT-GBG-F25</h2>
-    <div class="link-grid">
-      <!-- Open ItsLearning Forløb 2.1 in plan view -->    
-      <a href="https://ek.itslearning.com/plans/courses/7110/topics/22748" 
-        target="_blank" rel="noopener noreferrer" class="link-card"><i class="bi bi-1-circle"></i> Forløb 2.1
-      </a>
-
-      <!-- Open ItsLearning Forløb 2.2 in plan view -->    
-      <a href="https://ek.itslearning.com/plans/courses/7110/topics/22749" 
-        target="_blank" rel="noopener noreferrer" class="link-card"><i class="bi bi-2-circle"></i> Forløb 2.2
-      </a>
-
-      <!-- Open ItsLearning Forløb 2.3 in plan view -->    
-      <a href="https://ek.itslearning.com/plans/courses/7110/topics/22750" 
-        target="_blank" rel="noopener noreferrer" class="link-card"><i class="bi bi-3-circle"></i> Forløb 2.3
-      </a>
-
-      <!-- Open ItsLearning Forløb 2.4 in plan view -->    
-      <a href="https://ek.itslearning.com/plans/courses/7110/topics/22751" 
-        target="_blank" rel="noopener noreferrer" class="link-card"><i class="bi bi-4-circle"></i> Forløb 2.4
-      </a>
-
-      <!-- Open Groups Excel Sheet -->    
-      <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_F25_Grupper.xlsx"
-        class="link-card"><i class="bi bi-people"></i> Gruppeark (Desktop)
-      </a>
-
-      <!-- Open Vejledning Excel Sheet -->
-      <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efterår/2.%20semester/_Planning/ØKIT_GBG_F25_Vejledning.xlsm" 
-        target="_blank" class="link-card"><i class="bi bi-journal-text"></i> Vejledningsark (Desktop)
-      </a>
-
-      <!-- Open Semester Sharepoint -->
-      <a href="https://erhvervsakademikbenhavn.sharepoint.com/:f:/r/sites/TeamBusinessIT/Delte%20dokumenter/2025.2%20Efter%C3%A5r/2.%20semester?csf=1&web=1&e=SynlkP"
-        target="_blank" class="link-card"><i class="bi bi-folder-symlink"></i> SharePoint 2. Sem
-      </a>
-
-      <!-- Teams Desktop -->
-      <a href="msteams://teams.microsoft.com/l/team/19%3AIP9OaiOtMaAE9EHmMG0PO6mtjmixxkLRPCIZhMnJwJQ1%40thread.tacv2/conversations?groupId=b0f523cc-df8f-496b-9f49-8c18e5b18793&tenantId=9aafd452-b819-40a3-a400-f94ff33b0125"
-        target="_blank" class="link-card"><i class="bi bi-microsoft-teams"></i> Teams (Desktop)
-      </a>
-      <!-- Mail to Team (Outlook Web only) -->
-      <a href="https://outlook.office.com/mail/deeplink/compose?to=cllj@ek.dk,jean@ek.dk,ulpe@ek.dk,jenr@ek.dk,guin@ek.dk"
-        target="_blank" rel="noopener noreferrer" class="link-card">
-        <i class="bi bi-envelope-plus"></i> Skriv team
-      </a>
-
-      <!-- Mail to Class (Outlook Web only) -->
-      <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-f25@stud.kea.dk,cllj@ek.dk,jean@ek.dk,ulpe@ek.dk,jenr@ek.dk,guin@ek.dk"
-        target="_blank" rel="noopener noreferrer" class="link-card">
-        <i class="bi bi-envelope-plus"></i> Skriv klassen
-      </a>
-    </div>
-  </main>
-<footer>
-  &copy; 2025 
-  <a href="mailto:guin@ek.dk">guin@ek.dk</a> – Erhvervsakademi København
-  <img src="https://www.ek.dk/media/ixcclve3/ek_logo_business-blue_rgb.png" alt="EK Logo" class="corner-logo">
-</footer>
 </body>
 </html>
