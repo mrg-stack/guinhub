@@ -325,7 +325,7 @@
       <i class="bi bi-diagram-3-fill"></i> Emply
     </a>        
   </div>
-  <!-- F25: collapsible, collapsed by default -->
+  <!-- F25: collapsible, OPEN by default -->
   <h2 class="collapsible-header" data-target="f25-content">
     2. Sem ØKIT-GBG-F25
   </h2>
@@ -378,7 +378,7 @@
     </div>
   </div>
 
-  <!-- E25: collapsible, OPEN by default -->
+  <!-- E25: collapsible, collapsed by default -->
   <h2 class="collapsible-header" data-target="e25-content">
     2. Sem ØKIT-GBG-E25 (WORK IN PROGRESS)
   </h2>
@@ -534,28 +534,9 @@
     }
   })();
 
-  // Collapsibles (E25 + F25), with E25 open by default
+  // Collapsibles (E25 + F25), with F25 open by default
   document.addEventListener('DOMContentLoaded', () => {
     const headers = document.querySelectorAll('.collapsible-header');
-
-    function openSection(content) {
-      content.style.maxHeight = content.scrollHeight + 'px';
-      // If this collapsible is nested inside another collapsible, expand parent too
-      let parent = content.parentElement;
-      while (parent) {
-        if (parent.classList && parent.classList.contains('collapsible-content')) {
-          const isParentOpen = parent.style.maxHeight && parent.style.maxHeight !== '0px';
-          if (isParentOpen) {
-            parent.style.maxHeight = parent.scrollHeight + 'px';
-          }
-        }
-        parent = parent.parentElement;
-      }
-    }
-
-    function closeSection(content) {
-      content.style.maxHeight = '0px';
-    }
 
     headers.forEach(header => {
       const targetId = header.dataset.target;
@@ -565,17 +546,17 @@
       header.addEventListener('click', () => {
         const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
         if (isOpen) {
-          closeSection(content);
+          content.style.maxHeight = '0px';
         } else {
-          openSection(content);
+          content.style.maxHeight = content.scrollHeight + 'px';
         }
       });
     });
 
-    // E25 should be visible on load
-    const e25 = document.getElementById('e25-content');
-    if (e25) {
-      openSection(e25);
+    // F25 should be visible on load
+    const f25 = document.getElementById('f25-content');
+    if (f25) {
+      f25.style.maxHeight = f25.scrollHeight + 'px';
     }
   });
 </script>
