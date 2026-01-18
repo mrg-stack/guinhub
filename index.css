@@ -1,0 +1,493 @@
+/* ===================================
+   GUINhub – EK 2025 themed layout
+   With auto light/dark mode + Bootstrap Icons
+   =================================== */
+
+:root {
+  /* EK Design Guide core palette (brand constants) */
+  --ek-blue: #0038A8;          /* Business blue */
+  --ek-blue-light: #0C53ED;    /* Business blue light */
+  --ek-sand: #F8EDCA;          /* Daylight */
+  --ek-yellow-soft: #E8D285;   /* Sunlit energy */
+  --ek-green: #ACB504;         /* Campus green */
+  --ek-teal: #33ABB5;          /* Poolside study */
+  --ek-red: #FE4C61;           /* Academic fire */
+  --ek-peach: #FCA28A;         /* Students blush */
+
+  --ek-text: #333333;
+  --ek-muted: #666666;
+
+  --ek-surface: #FFFFFF;
+  --ek-surface-soft: #FFF7E4;
+
+  --ek-shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.10);
+
+  /* THEME (LIGHT DEFAULT) */
+  --page-bg: var(--ek-sand);
+  --page-surface: var(--ek-surface);
+  --page-surface-soft: var(--ek-surface-soft);
+  --page-text: var(--ek-text);
+  --page-muted: var(--ek-muted);
+  --page-blue: var(--ek-blue);
+  --page-blue-light: var(--ek-blue-light);
+  --page-shadow: var(--ek-shadow-soft);
+  --page-border-soft: rgba(0, 0, 0, 0.08);
+}
+
+/* Automatic dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg: #0B1016;
+    --page-surface: #10141B;
+    --page-surface-soft: #141C26;
+    --page-text: #E5E7EB;
+    --page-muted: #9CA3AF;
+    --page-blue: #7EA5FF;
+    --page-blue-light: #AFC8FF;
+    --page-shadow: 0 18px 40px rgba(0, 0, 0, 0.75);
+    --page-border-soft: rgba(148, 163, 184, 0.35);
+  }
+}
+
+/* ===================================
+   Layout & Typography
+   =================================== */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--page-text);
+  background:
+    radial-gradient(circle at top left, rgba(0, 56, 168, 0.16), transparent 60%),
+    var(--page-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-wrapper {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 16px 40px;
+}
+
+@media (min-width: 768px) {
+  .page-wrapper {
+    padding: 40px 24px 56px;
+  }
+}
+
+/* ===================================
+   Header
+   =================================== */
+
+.gh-header {
+  margin-bottom: 26px;
+}
+
+.gh-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.gh-logo-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--page-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 750;
+  font-size: 20px;
+  box-shadow: var(--page-shadow);
+}
+
+.gh-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 2.1vw + 1.5rem, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--page-blue);
+}
+
+.gh-tagline {
+  margin: 3px 0 0;
+  font-size: 0.95rem;
+  color: var(--page-muted);
+}
+
+/* ===================================
+   Search
+   =================================== */
+
+.gh-search {
+  margin: 18px 0 24px;
+}
+
+.gh-search-input {
+  width: 100%;
+  max-width: 380px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--page-border-soft);
+  background: var(--page-surface);
+  color: var(--page-text);
+  font-size: 0.95rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  outline: none;
+  transition: 150ms ease-out;
+}
+
+.gh-search-input::placeholder {
+  color: var(--page-muted);
+}
+
+.gh-search-input:focus {
+  border-color: var(--page-blue-light);
+  box-shadow: 0 0 0 2px rgba(12, 83, 237, 0.18);
+  transform: translateY(-1px);
+}
+
+/* ===================================
+   Section headers
+   =================================== */
+
+.gh-section {
+  margin-bottom: 26px;
+}
+
+.gh-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.gh-section-title {
+  font-size: 1.05rem;
+  font-weight: 720;
+  color: var(--page-blue);
+}
+
+.gh-section-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(232, 210, 133, 0.9);
+  color: var(--page-text);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+/* ===================================
+   Link grid & cards WITH ICONS
+   =================================== */
+
+.link-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .link-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .link-grid {
+    grid-template-columns: repeat(3, minmax(0,1fr));
+  }
+}
+
+/* CARD BASE */
+.link-card {
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--page-surface);
+  border: 1px solid var(--page-border-soft);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  color: var(--page-blue);
+  gap: 6px;
+  transition: 150ms ease-out;
+}
+
+.link-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 56, 168, 0.28);
+  box-shadow: var(--page-shadow);
+  background: linear-gradient(135deg, rgba(248,237,202,0.9), #fff);
+}
+
+/* ICON */
+.link-card i {
+  font-size: 1.45rem;
+  color: var(--page-blue-light);
+  margin-bottom: 4px;
+  transition: color 150ms;
+}
+
+.link-card:hover i {
+  color: var(--page-blue);
+}
+
+/* TITLE + SUBTEXT */
+.link-card-title {
+  font-size: 0.92rem;
+  font-weight: 640;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.link-card-sub {
+  font-size: 0.78rem;
+  color: var(--page-muted);
+}
+
+/* ===================================
+   Roles card
+   =================================== */
+
+.roles-card {
+  margin-top: 4px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--page-surface-soft);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.roles-title {
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--page-blue);
+  margin-bottom: 6px;
+}
+
+.roles-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.roles-table th,
+.roles-table td {
+  padding: 4px 6px;
+}
+
+.roles-table th {
+  text-align: left;
+  color: var(--page-muted);
+  border-bottom: 1px solid rgba(0,0,0,0.18);
+}
+
+.roles-table td {
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.roles-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===================================
+   E25 Columns
+   =================================== */
+
+.e25-columns {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 40px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.e25-columns::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: rgba(0,56,168,0.18);
+}
+
+.e25-column h3 {
+  margin-top: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--page-blue);
+}
+
+@media (max-width: 700px) {
+  .e25-columns {
+    grid-template-columns: 1fr;
+  }
+  .e25-columns::before {
+    display: none;
+  }
+}
+
+/* ===================================
+   Collapsibles
+   =================================== */
+
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.collapsible-header {
+  cursor: pointer;
+}
+
+/* ===================================
+   Footer
+   =================================== */
+
+.gh-footer {
+  margin-top: 32px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.16);
+  font-size: 0.8rem;
+  color: var(--page-muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gh-footer img {
+  height: 22px;
+  opacity: 0.95;
+}
+
+/* ===================================
+   Global links
+   =================================== */
+
+a {
+  color: var(--page-blue-light);
+}
+
+a:hover {
+  color: var(--page-blue);
+}
+
+/* ==========================================
+   GUINhub-style buttons (like original)
+   ========================================== */
+
+/* Back to natural card height per content */
+.link-grid {
+  grid-auto-rows: auto;
+}
+
+/* Card base – similar to original GUINhub */
+.link-card {
+  min-height: 0;
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: var(--page-surface);
+  border: 1px solid var(--page-border-soft);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  color: var(--page-blue);
+  transition:
+    background 0.2s ease-out,
+    color 0.2s ease-out,
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out,
+    border-color 0.2s ease-out;
+}
+
+/* Make the whole card clickable and keep left layout */
+.link-card a {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+
+/* Icon like the old version */
+.link-card i {
+  font-size: 1.7rem;
+  margin-bottom: 8px;
+  color: var(--page-blue-light);
+}
+
+/* Title + subtext similar to old GUINhub */
+.link-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.link-card-sub {
+  font-size: 0.8rem;
+  color: var(--page-muted);
+}
+
+/* Hover behaviour: blue pill with white text, like before */
+.link-card:hover {
+  background: var(--page-blue);
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.link-card:hover i,
+.link-card:hover .link-card-title,
+.link-card:hover .link-card-sub {
+  color: #ffffff;
+}
+
+/* ==========================================
+   FIX: Section pills should match theme properly
+   ========================================== */
+
+/* LIGHT MODE */
+.gh-section-pill {
+  background: rgba(232, 210, 133, 0.9); /* Sunlit energy */
+  color: var(--ek-text);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* DARK MODE */
+@media (prefers-color-scheme: dark) {
+  .gh-section-pill {
+    background: rgba(255, 255, 255, 0.12); /* Soft neutral pill */
+    color: var(--page-text);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px); /* Adds a subtle premium EK glassy effect */
+  }
+}
+
+/* Fix tiled background / gradient */
+body {
+  background-color: var(--page-bg);
+  background-image: radial-gradient(circle at top left, rgba(0, 56, 168, 0.16), transparent 60%);
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-attachment: fixed;     /* optional, looks nice on large screens */
+  background-size: 1200px 1200px;   /* adjust if you want a bigger/smaller “blob” */
+}
