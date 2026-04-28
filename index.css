@@ -1,5 +1,5 @@
 /* ===================================
-   GUINhub – EK 2025 themed layout
+   GUINhub – EK 2026 themed layout
    With auto light/dark mode + Bootstrap Icons
    =================================== */
 
@@ -178,13 +178,13 @@ body {
 .gh-section-pill {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: 999px;
   background: rgba(232, 210, 133, 0.9);
   color: var(--page-text);
-  font-size: 0.72rem;
+  font-size: 0.64rem;
   text-transform: uppercase;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.06em;
 }
 
 /* ===================================
@@ -459,6 +459,31 @@ a:hover {
 .link-card:hover .link-card-title,
 .link-card:hover .link-card-sub {
   color: #ffffff;
+}
+
+/* Slightly more compact cards for the teacher section */
+.gh-section--teacher .link-card {
+  padding: 14px 16px;
+}
+
+.gh-section--teacher .link-card i {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+
+.gh-section--teacher .link-card-title {
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.gh-section--teacher .link-card-sub {
+  font-size: 0.76rem;
+}
+
+/* Denser top-section grids with narrower cards */
+.gh-section--compact-grid .link-grid {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 180px));
+  justify-content: start;
 }
 
 /* ==========================================
