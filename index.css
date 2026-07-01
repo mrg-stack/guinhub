@@ -490,7 +490,7 @@ a:hover {
   display: none;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 900px) {
   .semester-link-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
