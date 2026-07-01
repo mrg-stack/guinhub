@@ -32,6 +32,11 @@
   --page-blue-light: var(--ek-blue-light);
   --page-shadow: var(--ek-shadow-soft);
   --page-border-soft: rgba(0, 0, 0, 0.08);
+  --page-primary-rgb: 0, 56, 168;
+  --theme-on-primary: #F8EDCA;
+  --page-pill-bg: rgba(0, 56, 168, 0.12);
+  --page-pill-text: var(--page-text);
+  --page-icon-color: var(--page-blue-light);
 }
 
 /* Automatic dark mode */
@@ -63,7 +68,7 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--page-text);
   background:
-    radial-gradient(circle at top left, rgba(0, 56, 168, 0.16), transparent 60%),
+    radial-gradient(circle at top left, rgba(var(--page-primary-rgb), 0.16), transparent 60%),
     var(--page-bg);
   -webkit-font-smoothing: antialiased;
 }
@@ -85,6 +90,11 @@ body {
    =================================== */
 
 .gh-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
   margin-bottom: 26px;
 }
 
@@ -99,7 +109,7 @@ body {
   height: 46px;
   border-radius: 50%;
   background: var(--page-blue);
-  color: #fff;
+  color: var(--theme-on-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,6 +130,50 @@ body {
   margin: 3px 0 0;
   font-size: 0.95rem;
   color: var(--page-muted);
+}
+
+.gh-theme-picker {
+  margin-top: 0;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--page-surface-soft);
+  border: 1px solid var(--page-border-soft);
+}
+
+@media (max-width: 640px) {
+  .gh-theme-picker {
+    margin-left: 0;
+  }
+}
+
+.gh-theme-label {
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  color: var(--page-muted);
+  text-transform: uppercase;
+}
+
+.gh-theme-select {
+  appearance: none;
+  border: 1px solid var(--page-border-soft);
+  border-radius: 999px;
+  background: var(--page-surface);
+  color: var(--page-text);
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 6px 28px 6px 10px;
+  max-width: 240px;
+}
+
+.gh-theme-select:focus {
+  outline: none;
+  border-color: var(--page-blue-light);
+  box-shadow: 0 0 0 2px rgba(var(--page-primary-rgb), 0.2);
 }
 
 /* ===================================
@@ -234,7 +288,7 @@ body {
 /* ICON */
 .link-card i {
   font-size: 1.45rem;
-  color: var(--page-blue-light);
+  color: var(--page-icon-color);
   margin-bottom: 4px;
   transition: color 150ms;
 }
@@ -431,7 +485,7 @@ a:hover {
 .link-card i {
   font-size: 1.7rem;
   margin-bottom: 8px;
-  color: var(--page-blue-light);
+  color: var(--page-icon-color);
 }
 
 /* Title + subtext similar to old GUINhub */
@@ -449,7 +503,7 @@ a:hover {
 /* Hover behaviour: blue pill with white text, like before */
 .link-card:hover {
   background: var(--page-blue);
-  color: #ffffff;
+  color: var(--theme-on-primary);
   border-color: transparent;
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
@@ -458,7 +512,7 @@ a:hover {
 .link-card:hover i,
 .link-card:hover .link-card-title,
 .link-card:hover .link-card-sub {
-  color: #ffffff;
+  color: var(--theme-on-primary);
 }
 
 /* Slightly more compact cards for the teacher section */
@@ -510,17 +564,17 @@ a:hover {
 
 /* LIGHT MODE */
 .gh-section-pill {
-  background: rgba(232, 210, 133, 0.9); /* Sunlit energy */
-  color: var(--ek-text);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--page-pill-bg);
+  color: var(--page-pill-text);
+  border: 1px solid var(--page-border-soft);
 }
 
 /* DARK MODE */
 @media (prefers-color-scheme: dark) {
   .gh-section-pill {
-    background: rgba(255, 255, 255, 0.12); /* Soft neutral pill */
-    color: var(--page-text);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--page-pill-bg);
+    color: var(--page-pill-text);
+    border: 1px solid var(--page-border-soft);
     backdrop-filter: blur(6px); /* Adds a subtle premium EK glassy effect */
   }
 }
@@ -528,7 +582,7 @@ a:hover {
 /* Fix tiled background / gradient */
 body {
   background-color: var(--page-bg);
-  background-image: radial-gradient(circle at top left, rgba(0, 56, 168, 0.16), transparent 60%);
+  background-image: radial-gradient(circle at top left, rgba(var(--page-primary-rgb), 0.16), transparent 60%);
   background-repeat: no-repeat;
   background-position: top left;
   background-attachment: fixed;     /* optional, looks nice on large screens */

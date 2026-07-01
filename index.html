@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="index.css?v=20260701">
+  <link rel="stylesheet" href="index.css?v=20260701c">
 </head>
 
 <body>
@@ -19,6 +19,10 @@
         <h1 class="gh-title">GUINhub</h1>
         <p class="gh-tagline">Din genvej til alt Økonomi &amp; IT</p>
       </div>
+    </div>
+    <div class="gh-theme-picker" aria-label="Temavalg">
+      <label class="gh-theme-label" for="theme-select">Tema</label>
+      <select id="theme-select" class="gh-theme-select"></select>
     </div>
   </header>
 
@@ -603,6 +607,122 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  const THEME_STORAGE_KEY = 'guinhub-theme-choice';
+  const approvedThemePairs = [
+    { id: 'business-daylight', name: 'Business Daylight', primary: '#0038A8', secondary: '#F8EDCA' },
+    { id: 'daylight-business', name: 'Daylight Business', primary: '#F8EDCA', secondary: '#0038A8' },
+    { id: 'campus-blue', name: 'Campus Blue', primary: '#ACB504', secondary: '#0038A8' },
+    { id: 'sunlit-blue', name: 'Sunlit Blue', primary: '#E8D285', secondary: '#0038A8' },
+    { id: 'academic-fire', name: 'Academic Fire', primary: '#FE4C61', secondary: '#F8EDCA' },
+    { id: 'peach-lecture', name: 'Peach Lecture', primary: '#FCA28A', secondary: '#0038A8' },
+    { id: 'poolside-daylight', name: 'Poolside Daylight', primary: '#33ABB5', secondary: '#F8EDCA' },
+    { id: 'paper-pencil', name: 'Paper Pencil', primary: '#F8EDCA', secondary: '#333333' },
+    { id: 'mint-night', name: 'Mint Night', primary: '#B0DEB7', secondary: '#00256B' },
+    { id: 'sage-business', name: 'Sage Business', primary: '#97AF72', secondary: '#0038A8' },
+    { id: 'yellow-midnight', name: 'Yellow Midnight', primary: '#EBD93B', secondary: '#00256B' },
+    { id: 'amber-midnight', name: 'Amber Midnight', primary: '#FFBF74', secondary: '#00256B' },
+    { id: 'blush-violet', name: 'Blush Violet', primary: '#FFD9DF', secondary: '#50027A' },
+    { id: 'evergreen-cream', name: 'Evergreen Cream', primary: '#5FAA83', secondary: '#F8EDCA' },
+    { id: 'violet-rose', name: 'Violet Rose', primary: '#50027A', secondary: '#FFD9DF' },
+    { id: 'lavender-violet', name: 'Lavender Violet', primary: '#CBA3FF', secondary: '#50027A' },
+    { id: 'wine-rose', name: 'Wine Rose', primary: '#6D003E', secondary: '#FFD9DF' },
+    { id: 'coral-wine', name: 'Coral Wine', primary: '#FF8D9D', secondary: '#6D003E' },
+    { id: 'indigo-cream', name: 'Indigo Cream', primary: '#6E6EE2', secondary: '#F8EDCA' },
+    { id: 'steel-cream', name: 'Steel Cream', primary: '#6284BC', secondary: '#F8EDCA' },
+    { id: 'midnight-daylight', name: 'Midnight Daylight', primary: '#00256B', secondary: '#F8EDCA' }
+  ];
+
+  function hexToRgb(hex) {
+    const clean = hex.replace('#', '');
+    const num = Number.parseInt(clean, 16);
+    return {
+      r: (num >> 16) & 255,
+      g: (num >> 8) & 255,
+      b: num & 255
+    };
+  }
+
+  function isLight(hex) {
+    const { r, g, b } = hexToRgb(hex);
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    return luminance >= 0.62;
+  }
+
+  function getThemeById(themeId) {
+    return approvedThemePairs.find(theme => theme.id === themeId) || approvedThemePairs[0];
+  }
+
+  function applyThemePair(themePair) {
+    const { primary, secondary } = themePair;
+    const rootStyle = document.documentElement.style;
+    const secondaryIsLight = isLight(secondary);
+    const primaryIsLight = isLight(primary);
+    const primaryRgb = hexToRgb(primary);
+    const onPrimary = primaryIsLight ? '#333333' : '#F8EDCA';
+    const bodyText = secondaryIsLight ? '#333333' : '#F8EDCA';
+    const mutedText = secondaryIsLight ? '#666666' : '#D8CFB4';
+    const borderSoft = secondaryIsLight ? 'rgba(0, 0, 0, 0.12)' : 'rgba(248, 237, 202, 0.24)';
+    const surface = secondaryIsLight ? '#FFFFFF' : 'rgba(248, 237, 202, 0.1)';
+    const surfaceSoft = secondaryIsLight ? '#FFF7E4' : 'rgba(248, 237, 202, 0.16)';
+    const pillBg = secondaryIsLight ? `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.16)` : 'rgba(248, 237, 202, 0.16)';
+    const pillText = secondaryIsLight ? bodyText : '#F8EDCA';
+    const iconColor = secondaryIsLight ? (primaryIsLight ? '#333333' : primary) : '#F8EDCA';
+
+    rootStyle.setProperty('--page-bg', secondary);
+    rootStyle.setProperty('--page-blue', primary);
+    rootStyle.setProperty('--page-blue-light', primaryIsLight ? secondary : primary);
+    rootStyle.setProperty('--page-text', bodyText);
+    rootStyle.setProperty('--page-muted', mutedText);
+    rootStyle.setProperty('--page-surface', surface);
+    rootStyle.setProperty('--page-surface-soft', surfaceSoft);
+    rootStyle.setProperty('--page-border-soft', borderSoft);
+    rootStyle.setProperty('--page-primary-rgb', `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}`);
+    rootStyle.setProperty('--theme-on-primary', onPrimary);
+    rootStyle.setProperty('--page-pill-bg', pillBg);
+    rootStyle.setProperty('--page-pill-text', pillText);
+    rootStyle.setProperty('--page-icon-color', iconColor);
+  }
+
+  function getInitialThemeId() {
+    const savedThemeId = localStorage.getItem(THEME_STORAGE_KEY);
+    if (savedThemeId && approvedThemePairs.some(theme => theme.id === savedThemeId)) {
+      return savedThemeId;
+    }
+
+    const legacyIndexRaw = localStorage.getItem('guinhub-theme-index');
+    const legacyIndex = Number.parseInt(legacyIndexRaw ?? '', 10);
+    if (!Number.isNaN(legacyIndex) && approvedThemePairs[legacyIndex]) {
+      return approvedThemePairs[legacyIndex].id;
+    }
+
+    return approvedThemePairs[0].id;
+  }
+
+  function setupThemeSelector() {
+    const themeSelect = document.getElementById('theme-select');
+    if (!themeSelect) return;
+
+    approvedThemePairs.forEach(theme => {
+      const option = document.createElement('option');
+      option.value = theme.id;
+      option.textContent = theme.name;
+      themeSelect.appendChild(option);
+    });
+
+    const initialThemeId = getInitialThemeId();
+    themeSelect.value = initialThemeId;
+    applyThemePair(getThemeById(initialThemeId));
+    localStorage.setItem(THEME_STORAGE_KEY, initialThemeId);
+
+    themeSelect.addEventListener('change', () => {
+      const selectedThemeId = themeSelect.value;
+      applyThemePair(getThemeById(selectedThemeId));
+      localStorage.setItem(THEME_STORAGE_KEY, selectedThemeId);
+    });
+  }
+
+  setupThemeSelector();
+
   const headers = document.querySelectorAll('.collapsible-header');
 
   function refreshOpenAncestors(content) {
