@@ -208,11 +208,11 @@
   <section class="gh-section">
     <div class="gh-section-header collapsible-header" data-target="f26-content">
       <h2 class="gh-section-title">2. Sem ØIT-GBG-DA-F26</h2>
-      <span class="gh-section-pill">Kommende semester</span>
+      <span class="gh-section-pill">Aktuelt semester</span>
     </div>
 
     <div id="f26-content" class="collapsible-content">
-      <div class="link-grid">
+      <div class="link-grid semester-link-grid">
         <div class="link-card">
           <a href="https://ek.itslearning.com/plans/courses/7652/topics/25119?ChildId=0" target="_blank" rel="noopener noreferrer">
             <i class="bi bi-1-circle"></i>
@@ -241,6 +241,14 @@
             <div class="link-card-sub">Itslearning F26</div>
           </a>
         </div>
+        <div class="semester-divider" aria-hidden="true"></div>
+        <div class="link-card">
+          <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2026.2%20Efter%C3%A5r/Semesterplanl%C3%A6gning/GuinARK_2026_v1.0.xlsm">
+            <i class="bi bi-file-earmark-spreadsheet"></i>
+            <div class="link-card-title">GUINark</div>
+            <div class="link-card-sub">Desktop</div>
+          </a>
+        </div>
         <div class="link-card">
           <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn-my.sharepoint.com/personal/guin_ek_dk/Documents/EK/__Shared/%C3%98KIT_GBG_F26_Grupper.xlsx">
             <i class="bi bi-people"></i>
@@ -263,14 +271,7 @@
           </a>
         </div>
         <div class="link-card">
-          <a href="ms-excel:ofe|u|https://erhvervsakademikbenhavn.sharepoint.com/sites/TeamBusinessIT/Delte%20dokumenter/2026.2%20Efter%C3%A5r/Semesterplanl%C3%A6gning/GuinARK_2026_v1.0.xlsm">
-            <i class="bi bi-file-earmark-spreadsheet"></i>
-            <div class="link-card-title">GUINark</div>
-            <div class="link-card-sub">Desktop</div>
-          </a>
-        </div>
-        <div class="link-card">
-          <a href="msteams://" target="_blank" rel="noopener noreferrer">
+          <a href="msteams://https://teams.microsoft.com/l/team/19%3A4D7KcWLlJsMwN3nk3TU9VxSNaOV_oCh4wfyYm_wskzc1%40thread.tacv2/conversations?groupId=3b58bc2c-2c6c-4729-b97a-ce3960689a8f&tenantId=9aafd452-b819-40a3-a400-f94ff33b0125" target="_blank" rel="noopener noreferrer">
             <i class="bi bi-microsoft-teams"></i>
             <div class="link-card-title">Teams</div>
             <div class="link-card-sub">F26 Desktop</div>
@@ -326,7 +327,7 @@
   <section class="gh-section">
     <div class="gh-section-header collapsible-header" data-target="e25-content">
       <h2 class="gh-section-title">2. Sem ØKIT-GBG-E25</h2>
-      <span class="gh-section-pill">Aktuelt semester</span>
+      <span class="gh-section-pill">Tidligere semester</span>
     </div>
 
     <div id="e25-content" class="collapsible-content">
@@ -657,9 +658,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const e25 = document.getElementById('e25-content');
-  if (e25) {
-    openSection(e25);
+  const f26 = document.getElementById('f26-content');
+  if (f26) {
+    openSection(f26);
+  }
+
+  const f26Roles = document.getElementById('f26-roles-content');
+  if (f26Roles) {
+    openSection(f26Roles);
   }
 });
 </script>

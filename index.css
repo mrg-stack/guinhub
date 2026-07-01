@@ -486,6 +486,24 @@ a:hover {
   justify-content: start;
 }
 
+.semester-divider {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .semester-link-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .semester-divider {
+    display: block;
+    grid-column: 1 / -1;
+    height: 0;
+    margin: 2px 0 4px;
+    border-top: 1px solid var(--page-border-soft);
+  }
+}
+
 /* ==========================================
    FIX: Section pills should match theme properly
    ========================================== */
