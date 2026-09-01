@@ -608,29 +608,311 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const THEME_STORAGE_KEY = 'guinhub-theme-choice';
-  const approvedThemePairs = [
-    { id: 'business-daylight', name: 'Business Daylight', primary: '#0038A8', secondary: '#F8EDCA' },
-    { id: 'daylight-business', name: 'Daylight Business', primary: '#F8EDCA', secondary: '#0038A8' },
-    { id: 'campus-blue', name: 'Campus Blue', primary: '#ACB504', secondary: '#0038A8' },
-    { id: 'sunlit-blue', name: 'Sunlit Blue', primary: '#E8D285', secondary: '#0038A8' },
-    { id: 'academic-fire', name: 'Academic Fire', primary: '#FE4C61', secondary: '#F8EDCA' },
-    { id: 'peach-lecture', name: 'Peach Lecture', primary: '#FCA28A', secondary: '#0038A8' },
-    { id: 'poolside-daylight', name: 'Poolside Daylight', primary: '#33ABB5', secondary: '#F8EDCA' },
-    { id: 'paper-pencil', name: 'Paper Pencil', primary: '#F8EDCA', secondary: '#333333' },
-    { id: 'mint-night', name: 'Mint Night', primary: '#B0DEB7', secondary: '#00256B' },
-    { id: 'sage-business', name: 'Sage Business', primary: '#97AF72', secondary: '#0038A8' },
-    { id: 'yellow-midnight', name: 'Yellow Midnight', primary: '#EBD93B', secondary: '#00256B' },
-    { id: 'amber-midnight', name: 'Amber Midnight', primary: '#FFBF74', secondary: '#00256B' },
-    { id: 'blush-violet', name: 'Blush Violet', primary: '#FFD9DF', secondary: '#50027A' },
-    { id: 'evergreen-cream', name: 'Evergreen Cream', primary: '#5FAA83', secondary: '#F8EDCA' },
-    { id: 'violet-rose', name: 'Violet Rose', primary: '#50027A', secondary: '#FFD9DF' },
-    { id: 'lavender-violet', name: 'Lavender Violet', primary: '#CBA3FF', secondary: '#50027A' },
-    { id: 'wine-rose', name: 'Wine Rose', primary: '#6D003E', secondary: '#FFD9DF' },
-    { id: 'coral-wine', name: 'Coral Wine', primary: '#FF8D9D', secondary: '#6D003E' },
-    { id: 'indigo-cream', name: 'Indigo Cream', primary: '#6E6EE2', secondary: '#F8EDCA' },
-    { id: 'steel-cream', name: 'Steel Cream', primary: '#6284BC', secondary: '#F8EDCA' },
-    { id: 'midnight-daylight', name: 'Midnight Daylight', primary: '#00256B', secondary: '#F8EDCA' }
+  const themes = [
+    {
+      id: 'cobalt-coral',
+      name: 'Cobalt Signal',
+      mode: 'light',
+      primary: '#123D78',
+      accent: '#C93262',
+      support: '#9A6700',
+      background: '#B9C7D6',
+      surface: '#E2E8EE',
+      surfaceSoft: '#A8B8C9',
+      text: '#172533',
+      muted: '#445463',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'campus-forest',
+      name: 'Campus Bloom',
+      mode: 'light',
+      primary: '#164B3A',
+      accent: '#B96800',
+      support: '#A04434',
+      background: '#AFC5B8',
+      surface: '#E2EBE5',
+      surfaceSoft: '#94AC9D',
+      text: '#1B2D27',
+      muted: '#354E45',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'poolside-clay',
+      name: 'Poolside Voltage',
+      mode: 'light',
+      primary: '#064F5C',
+      accent: '#8D3E5C',
+      support: '#A86F1F',
+      background: '#8FC5CC',
+      surface: '#DCE8E8',
+      surfaceSoft: '#74ADB5',
+      text: '#142D33',
+      muted: '#2F4A50',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'academic-plum',
+      name: 'Academic Electric',
+      mode: 'dark',
+      primary: '#FBFF00',
+      accent: '#0095FF',
+      support: '#9D00FF',
+      background: '#071C33',
+      surface: '#102A45',
+      surfaceSoft: '#183B5C',
+      text: '#F2F7FA',
+      muted: '#AFC1CF',
+      onPrimary: '#101A26'
+    },
+    {
+      id: 'daylight-ink',
+      name: 'Daylight Circuit',
+      mode: 'light',
+      primary: '#293A4A',
+      accent: '#9E2F62',
+      support: '#25669B',
+      background: '#C8BA8E',
+      surface: '#E8DFC2',
+      surfaceSoft: '#B4A374',
+      text: '#252C33',
+      muted: '#494942',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'apricot-fjord',
+      name: 'Apricot + Fjord',
+      mode: 'light',
+      primary: '#174E68',
+      accent: '#BA4258',
+      support: '#8C6500',
+      background: '#C4CEC3',
+      surface: '#E5EAE3',
+      surfaceSoft: '#AEBDAF',
+      text: '#1C3037',
+      muted: '#45575A',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'quattro-dawn',
+      name: 'Quattro Dawn',
+      mode: 'light',
+      primary: '#64204F',
+      accent: '#B92E68',
+      support: '#246B78',
+      background: '#CFA9B0',
+      surface: '#EBD7D8',
+      surfaceSoft: '#BA8D99',
+      text: '#35232D',
+      muted: '#553B47',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'solar-paper',
+      name: 'Solar Paper',
+      mode: 'light',
+      primary: '#5E2A68',
+      accent: '#A72D61',
+      support: '#176B73',
+      background: '#D0C184',
+      surface: '#ECE4C3',
+      surfaceSoft: '#BCAA68',
+      text: '#302633',
+      muted: '#554A55',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'rose-horizon',
+      name: 'Tetrad Pulse',
+      mode: 'dark',
+      primary: '#FAC914',
+      accent: '#14FA56',
+      support: '#FA14B8',
+      atmosphere: '#1445FA',
+      background: '#111522',
+      surface: '#1B2233',
+      surfaceSoft: '#252E43',
+      text: '#F1F4FA',
+      muted: '#AEB8CC',
+      onPrimary: '#181A20'
+    },
+    {
+      id: 'windows-11-mica',
+      name: 'Windows 11 Explorer',
+      mode: 'light',
+      primary: '#004A8F',
+      accent: '#E6A400',
+      support: '#0078D4',
+      background: '#A9C8DE',
+      surface: '#EAF2F8',
+      surfaceSoft: '#94B7D1',
+      text: '#172B3A',
+      muted: '#374F61',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'macos-aqua',
+      name: 'macOS Finder',
+      mode: 'light',
+      primary: '#075680',
+      accent: '#25A4E3',
+      support: '#687E8E',
+      background: '#C9D1D8',
+      surface: '#F0F2F4',
+      surfaceSoft: '#B5C0C9',
+      text: '#20272D',
+      muted: '#4A565F',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'omarchy-default',
+      name: 'Omarchy Default',
+      mode: 'dark',
+      primary: '#9ECE6A',
+      accent: '#7AA2F7',
+      support: '#7DCFFF',
+      background: '#1A1B26',
+      surface: '#24283B',
+      surfaceSoft: '#292E42',
+      text: '#C0CAF5',
+      muted: '#9AA5CE',
+      onPrimary: '#1A1B26'
+    },
+    {
+      id: 'mint-cinnamon',
+      name: 'Linux Mint Cinnamon',
+      mode: 'dark',
+      primary: '#9BCF65',
+      accent: '#E98945',
+      support: '#8190A5',
+      background: '#1B1D1E',
+      surface: '#2B2D2E',
+      surfaceSoft: '#3A3C3E',
+      text: '#F0F1EE',
+      muted: '#B8BCB6',
+      onPrimary: '#17200F'
+    },
+    {
+      id: 'ubuntu-aubergine',
+      name: 'Ubuntu Aubergine',
+      mode: 'dark',
+      primary: '#FF9A5A',
+      accent: '#78C7F0',
+      support: '#8BCF68',
+      atmosphere: '#C749C8',
+      background: '#48223F',
+      surface: '#5A3150',
+      surfaceSoft: '#6B3E60',
+      text: '#FFF6FB',
+      muted: '#D7BCCB',
+      onPrimary: '#321125'
+    },
+    {
+      id: 'quattro-sunset',
+      name: 'Quattro Sunset',
+      mode: 'dark',
+      primary: '#FF9A68',
+      accent: '#F04D85',
+      support: '#B86AE3',
+      background: '#19101F',
+      surface: '#2A172F',
+      surfaceSoft: '#3A2042',
+      text: '#F8E8EF',
+      muted: '#C6A3B4',
+      onPrimary: '#2A111D'
+    },
+    {
+      id: 'solar-rally',
+      name: 'Solar Rally',
+      mode: 'dark',
+      primary: '#F5E57A',
+      accent: '#D94A82',
+      support: '#8551B5',
+      background: '#1A152A',
+      surface: '#272038',
+      surfaceSoft: '#332A46',
+      text: '#F1EAF6',
+      muted: '#B5A9C2',
+      onPrimary: '#211A24'
+    },
+    {
+      id: 'business-midnight',
+      name: 'Business Midnight',
+      mode: 'dark',
+      primary: '#8BABF1',
+      accent: '#FE4C61',
+      support: '#D6B95C',
+      background: '#0C1424',
+      surface: '#131F34',
+      surfaceSoft: '#192842',
+      text: '#E4EBF8',
+      muted: '#9EABC0',
+      onPrimary: '#0C1424'
+    },
+    {
+      id: 'campus-nocturne',
+      name: 'Campus Nocturne',
+      mode: 'dark',
+      primary: '#D1D75E',
+      accent: '#F06C5B',
+      support: '#57B8A5',
+      background: '#131B17',
+      surface: '#1C2821',
+      surfaceSoft: '#28372E',
+      text: '#E2E9DE',
+      muted: '#A2B09F',
+      onPrimary: '#172015'
+    },
+    {
+      id: 'poolside-afterdark',
+      name: 'Poolside Afterdark',
+      mode: 'dark',
+      primary: '#72D4DB',
+      accent: '#F07A72',
+      support: '#9E71D1',
+      background: '#0D2027',
+      surface: '#162D34',
+      surfaceSoft: '#203C44',
+      text: '#DCEDEF',
+      muted: '#9DB6BA',
+      onPrimary: '#102327'
+    },
+    {
+      id: 'academic-ember',
+      name: 'Academic Ember',
+      mode: 'dark',
+      primary: '#FF7B89',
+      accent: '#E8D285',
+      support: '#9D65C5',
+      background: '#211318',
+      surface: '#321C24',
+      surfaceSoft: '#422631',
+      text: '#F5E5E8',
+      muted: '#C2A2AA',
+      onPrimary: '#281216'
+    },
+    {
+      id: 'violet-signal',
+      name: 'Violet Signal',
+      mode: 'dark',
+      primary: '#D6A9FF',
+      accent: '#F06B8A',
+      support: '#D9C55A',
+      background: '#181322',
+      surface: '#271D32',
+      surfaceSoft: '#352640',
+      text: '#EEE7F5',
+      muted: '#B6A8C2',
+      onPrimary: '#21152B'
+    }
   ];
+
+  const referenceThemeIds = new Set([
+    'omarchy-default',
+    'mint-cinnamon',
+    'solar-rally',
+    'business-midnight'
+  ]);
 
   function hexToRgb(hex) {
     const clean = hex.replace('#', '');
@@ -642,81 +924,76 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  function isLight(hex) {
-    const { r, g, b } = hexToRgb(hex);
-    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-    return luminance >= 0.62;
-  }
-
   function getThemeById(themeId) {
-    return approvedThemePairs.find(theme => theme.id === themeId) || approvedThemePairs[0];
+    return themes.find(theme => theme.id === themeId) || themes[0];
   }
 
-  function applyThemePair(themePair) {
-    const { primary, secondary } = themePair;
+  function applyTheme(theme) {
+    const { primary, accent } = theme;
     const rootStyle = document.documentElement.style;
-    const secondaryIsLight = isLight(secondary);
-    const primaryIsLight = isLight(primary);
     const primaryRgb = hexToRgb(primary);
-    const onPrimary = primaryIsLight ? '#333333' : '#F8EDCA';
-    const bodyText = secondaryIsLight ? '#333333' : '#F8EDCA';
-    const mutedText = secondaryIsLight ? '#666666' : '#D8CFB4';
-    const borderSoft = secondaryIsLight ? 'rgba(0, 0, 0, 0.12)' : 'rgba(248, 237, 202, 0.24)';
-    const surface = secondaryIsLight ? '#FFFFFF' : 'rgba(248, 237, 202, 0.1)';
-    const surfaceSoft = secondaryIsLight ? '#FFF7E4' : 'rgba(248, 237, 202, 0.16)';
-    const pillBg = secondaryIsLight ? `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.16)` : 'rgba(248, 237, 202, 0.16)';
-    const pillText = secondaryIsLight ? bodyText : '#F8EDCA';
-    const iconColor = secondaryIsLight ? (primaryIsLight ? '#333333' : primary) : '#F8EDCA';
+    const accentRgb = hexToRgb(accent);
+    const supportRgb = hexToRgb(theme.support || accent);
+    const atmosphereRgb = hexToRgb(theme.atmosphere || theme.support || accent);
+    const darkMode = theme.mode === 'dark';
+    const isReferenceTheme = referenceThemeIds.has(theme.id);
 
-    rootStyle.setProperty('--page-bg', secondary);
+    document.documentElement.dataset.themeMode = theme.mode;
+    rootStyle.setProperty('color-scheme', theme.mode);
+    rootStyle.setProperty('--page-bg', theme.background);
     rootStyle.setProperty('--page-blue', primary);
-    rootStyle.setProperty('--page-blue-light', primaryIsLight ? secondary : primary);
-    rootStyle.setProperty('--page-text', bodyText);
-    rootStyle.setProperty('--page-muted', mutedText);
-    rootStyle.setProperty('--page-surface', surface);
-    rootStyle.setProperty('--page-surface-soft', surfaceSoft);
-    rootStyle.setProperty('--page-border-soft', borderSoft);
+    rootStyle.setProperty('--page-blue-light', primary);
+    rootStyle.setProperty('--page-accent', accent);
+    rootStyle.setProperty('--page-support', theme.support || accent);
+    rootStyle.setProperty('--page-text', theme.text);
+    rootStyle.setProperty('--page-muted', theme.muted);
+    rootStyle.setProperty('--page-surface', theme.surface);
+    rootStyle.setProperty('--page-surface-soft', theme.surfaceSoft);
+    rootStyle.setProperty('--page-border-soft', darkMode ? 'rgba(255, 255, 255, 0.13)' : `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.16)`);
+    rootStyle.setProperty('--page-shadow', darkMode ? '0 14px 32px rgba(0, 0, 0, 0.45)' : '0 10px 28px rgba(0, 0, 0, 0.10)');
     rootStyle.setProperty('--page-primary-rgb', `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}`);
-    rootStyle.setProperty('--theme-on-primary', onPrimary);
-    rootStyle.setProperty('--page-pill-bg', pillBg);
-    rootStyle.setProperty('--page-pill-text', pillText);
-    rootStyle.setProperty('--page-icon-color', iconColor);
+    rootStyle.setProperty('--page-accent-rgb', `${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}`);
+    rootStyle.setProperty('--page-support-rgb', `${supportRgb.r}, ${supportRgb.g}, ${supportRgb.b}`);
+    rootStyle.setProperty('--page-atmosphere-rgb', `${atmosphereRgb.r}, ${atmosphereRgb.g}, ${atmosphereRgb.b}`);
+    rootStyle.setProperty('--page-atmosphere-alpha', isReferenceTheme ? '0' : (darkMode ? '0.08' : '0.22'));
+    rootStyle.setProperty('--theme-on-primary', theme.onPrimary);
+    rootStyle.setProperty('--page-pill-bg', `rgba(${supportRgb.r}, ${supportRgb.g}, ${supportRgb.b}, ${darkMode ? 0.18 : 0.2})`);
+    rootStyle.setProperty('--page-pill-text', theme.text);
+    rootStyle.setProperty('--page-icon-color', accent);
   }
 
   function getInitialThemeId() {
     const savedThemeId = localStorage.getItem(THEME_STORAGE_KEY);
-    if (savedThemeId && approvedThemePairs.some(theme => theme.id === savedThemeId)) {
+    if (savedThemeId && themes.some(theme => theme.id === savedThemeId)) {
       return savedThemeId;
     }
-
-    const legacyIndexRaw = localStorage.getItem('guinhub-theme-index');
-    const legacyIndex = Number.parseInt(legacyIndexRaw ?? '', 10);
-    if (!Number.isNaN(legacyIndex) && approvedThemePairs[legacyIndex]) {
-      return approvedThemePairs[legacyIndex].id;
-    }
-
-    return approvedThemePairs[0].id;
+    return themes[0].id;
   }
 
   function setupThemeSelector() {
     const themeSelect = document.getElementById('theme-select');
     if (!themeSelect) return;
 
-    approvedThemePairs.forEach(theme => {
-      const option = document.createElement('option');
-      option.value = theme.id;
-      option.textContent = theme.name;
-      themeSelect.appendChild(option);
+    ['light', 'dark'].forEach(mode => {
+      const group = document.createElement('optgroup');
+      group.label = mode === 'light' ? 'Light themes' : 'Dark themes';
+      themes.filter(theme => theme.mode === mode).forEach(theme => {
+        const option = document.createElement('option');
+        option.value = theme.id;
+        option.textContent = theme.name;
+        group.appendChild(option);
+      });
+      themeSelect.appendChild(group);
     });
 
     const initialThemeId = getInitialThemeId();
     themeSelect.value = initialThemeId;
-    applyThemePair(getThemeById(initialThemeId));
+    applyTheme(getThemeById(initialThemeId));
     localStorage.setItem(THEME_STORAGE_KEY, initialThemeId);
 
     themeSelect.addEventListener('change', () => {
       const selectedThemeId = themeSelect.value;
-      applyThemePair(getThemeById(selectedThemeId));
+      applyTheme(getThemeById(selectedThemeId));
       localStorage.setItem(THEME_STORAGE_KEY, selectedThemeId);
     });
   }

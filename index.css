@@ -33,7 +33,13 @@
   --page-shadow: var(--ek-shadow-soft);
   --page-border-soft: rgba(0, 0, 0, 0.08);
   --page-primary-rgb: 0, 56, 168;
-  --theme-on-primary: #F8EDCA;
+  --page-accent: #C43D52;
+  --page-accent-rgb: 196, 61, 82;
+  --page-support: #C43D52;
+  --page-support-rgb: 196, 61, 82;
+  --page-atmosphere-rgb: 196, 61, 82;
+  --page-atmosphere-alpha: 0;
+  --theme-on-primary: #FFFFFF;
   --page-pill-bg: rgba(0, 56, 168, 0.12);
   --page-pill-text: var(--page-text);
   --page-icon-color: var(--page-blue-light);
@@ -204,7 +210,7 @@ body {
 
 .gh-search-input:focus {
   border-color: var(--page-blue-light);
-  box-shadow: 0 0 0 2px rgba(12, 83, 237, 0.18);
+  box-shadow: 0 0 0 2px rgba(var(--page-primary-rgb), 0.18);
   transform: translateY(-1px);
 }
 
@@ -280,9 +286,9 @@ body {
 
 .link-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 56, 168, 0.28);
+  border-color: rgba(var(--page-primary-rgb), 0.28);
   box-shadow: var(--page-shadow);
-  background: linear-gradient(135deg, rgba(248,237,202,0.9), #fff);
+  background: var(--page-surface-soft);
 }
 
 /* ICON */
@@ -320,7 +326,7 @@ body {
   padding: 12px;
   border-radius: 12px;
   background: var(--page-surface-soft);
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid var(--page-border-soft);
   box-shadow: 0 4px 10px rgba(0,0,0,0.04);
 }
 
@@ -345,11 +351,11 @@ body {
 .roles-table th {
   text-align: left;
   color: var(--page-muted);
-  border-bottom: 1px solid rgba(0,0,0,0.18);
+  border-bottom: 1px solid var(--page-border-soft);
 }
 
 .roles-table td {
-  border-bottom: 1px solid rgba(0,0,0,0.08);
+  border-bottom: 1px solid var(--page-border-soft);
 }
 
 .roles-table tr:last-child td {
@@ -375,7 +381,7 @@ body {
   bottom: 0;
   left: 50%;
   width: 2px;
-  background: rgba(0,56,168,0.18);
+  background: rgba(var(--page-primary-rgb), 0.18);
 }
 
 .e25-column h3 {
@@ -415,7 +421,7 @@ body {
 .gh-footer {
   margin-top: 32px;
   padding-top: 14px;
-  border-top: 1px solid rgba(0,0,0,0.16);
+  border-top: 1px solid var(--page-border-soft);
   font-size: 0.8rem;
   color: var(--page-muted);
   display: flex;
@@ -582,9 +588,11 @@ a:hover {
 /* Fix tiled background / gradient */
 body {
   background-color: var(--page-bg);
-  background-image: radial-gradient(circle at top left, rgba(var(--page-primary-rgb), 0.16), transparent 60%);
+  background-image:
+    radial-gradient(circle at top left, rgba(var(--page-primary-rgb), 0.16), transparent 60%),
+    radial-gradient(circle at 90% 12%, rgba(var(--page-atmosphere-rgb), var(--page-atmosphere-alpha)), transparent 38%);
   background-repeat: no-repeat;
-  background-position: top left;
-  background-attachment: fixed;     /* optional, looks nice on large screens */
-  background-size: 1200px 1200px;   /* adjust if you want a bigger/smaller “blob” */
+  background-position: top left, bottom right;
+  background-attachment: fixed;
+  background-size: 100% 100%;
 }
