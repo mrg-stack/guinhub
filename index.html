@@ -615,6 +615,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const THEME_STORAGE_KEY = 'guinhub-theme-choice';
+  const DEFAULT_THEME_ID = 'solar-rally';
   const themes = [
     {
       id: 'cobalt-coral',
@@ -932,7 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getThemeById(themeId) {
-    return themes.find(theme => theme.id === themeId) || themes[0];
+    return themes.find(theme => theme.id === themeId) || themes.find(theme => theme.id === DEFAULT_THEME_ID);
   }
 
   function applyTheme(theme) {
@@ -974,7 +975,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedThemeId && themes.some(theme => theme.id === savedThemeId)) {
       return savedThemeId;
     }
-    return themes[0].id;
+    return DEFAULT_THEME_ID;
   }
 
   function setupThemeSelector() {

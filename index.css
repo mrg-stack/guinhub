@@ -458,6 +458,7 @@ a:hover {
 
 /* Card base – similar to original GUINhub */
 .link-card {
+  --card-enter-order: 0;
   min-height: 0;
   padding: 18px 20px;
   border-radius: 12px;
@@ -469,12 +470,40 @@ a:hover {
   align-items: flex-start;
   text-align: left;
   color: var(--page-blue);
+  animation: card-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--card-enter-order) * 55ms);
   transition:
     background 0.2s ease-out,
     color 0.2s ease-out,
     transform 0.2s ease-out,
     box-shadow 0.2s ease-out,
     border-color 0.2s ease-out;
+}
+
+.link-grid .link-card:nth-child(2) { --card-enter-order: 1; }
+.link-grid .link-card:nth-child(3) { --card-enter-order: 2; }
+.link-grid .link-card:nth-child(4) { --card-enter-order: 3; }
+.link-grid .link-card:nth-child(5) { --card-enter-order: 4; }
+.link-grid .link-card:nth-child(6) { --card-enter-order: 5; }
+.link-grid .link-card:nth-child(7) { --card-enter-order: 6; }
+.link-grid .link-card:nth-child(8) { --card-enter-order: 7; }
+.link-grid .link-card:nth-child(n + 9) { --card-enter-order: 8; }
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-card {
+    animation: none;
+  }
 }
 
 /* Make the whole card clickable and keep left layout */
@@ -589,10 +618,29 @@ a:hover {
 body {
   background-color: var(--page-bg);
   background-image:
-    radial-gradient(circle at top left, rgba(var(--page-primary-rgb), 0.16), transparent 60%),
-    radial-gradient(circle at 90% 12%, rgba(var(--page-atmosphere-rgb), var(--page-atmosphere-alpha)), transparent 38%);
+    radial-gradient(circle at 24% 22%, rgba(var(--page-primary-rgb), 0.16), transparent 58%),
+    radial-gradient(circle at 76% 24%, rgba(var(--page-atmosphere-rgb), var(--page-atmosphere-alpha)), transparent 42%);
   background-repeat: no-repeat;
-  background-position: top left, bottom right;
+  background-position: 0% 0%, 100% 100%;
   background-attachment: fixed;
-  background-size: 100% 100%;
+  background-size: 130% 130%;
+  animation: gradient-drift 32s ease-in-out infinite alternate;
+}
+
+@keyframes gradient-drift {
+  0% {
+    background-position: 0% 0%, 100% 100%;
+  }
+  50% {
+    background-position: 12% 8%, 86% 92%;
+  }
+  100% {
+    background-position: 20% 14%, 78% 84%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
 }
