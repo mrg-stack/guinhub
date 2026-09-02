@@ -16,7 +16,7 @@
     <div class="gh-title-row">
       <div class="gh-logo-circle">ØK</div>
       <div>
-        <h1 class="gh-title">GUINhub</h1>
+        <h1 id="gh-title" class="gh-title">GUINhub</h1>
         <p class="gh-tagline">Din genvej til alt Økonomi &amp; IT</p>
       </div>
     </div>
@@ -621,6 +621,12 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  const title = document.getElementById('gh-title');
+  const isFridayTest = new URLSearchParams(window.location.search).has('friday');
+  if (title && (new Date().getDay() === 5 || isFridayTest)) {
+    title.textContent = 'FREDAGhub';
+  }
+
   const THEME_STORAGE_KEY = 'guinhub-theme-choice';
   const DEFAULT_THEME_ID = 'solar-rally';
   const themes = [
