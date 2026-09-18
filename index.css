@@ -425,14 +425,22 @@ body {
   font-size: 0.8rem;
   color: var(--page-muted);
   display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
   gap: 12px;
   flex-wrap: wrap;
 }
 
+.gh-logo-filter {
+  position: absolute;
+}
+
 .gh-footer img {
-  height: 22px;
-  opacity: 0.95;
+  height: 66px;
+  max-width: 100%;
+  object-fit: contain;
+  filter: url(#ek-logo-colour);
 }
 
 /* ===================================
