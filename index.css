@@ -583,6 +583,18 @@ a:hover {
   justify-content: start;
 }
 
+@media (max-width: 639px) {
+  .link-grid,
+  .gh-section--compact-grid .link-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+  }
+
+  .link-card {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
 .semester-divider {
   display: none;
 }
