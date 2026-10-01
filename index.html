@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <title>GUINhub – Din genvej til alt Økonomi & IT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="index.css?v=20260918a">
+  <link rel="stylesheet" href="index.css?v=20261001d">
+  <script defer src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.28/build/Midi.js"></script>
 </head>
 
 <body>
@@ -24,7 +24,16 @@
     <div class="gh-theme-picker" aria-label="Temavalg">
       <label class="gh-theme-label" for="theme-select">Tema</label>
       <select id="theme-select" class="gh-theme-select"></select>
+      <label id="snow-control" class="gh-snow-toggle" hidden>
+        <input id="snow-toggle" type="checkbox" checked>
+        <span id="effects-label">Sne</span>
+      </label>
+      <label id="music-control" class="gh-music-toggle" title="Jingle Bells" hidden>
+        <input id="music-toggle" type="checkbox">
+        Musik
+      </label>
     </div>
+    <span id="music-status" class="gh-music-status" role="status" hidden></span>
   </header>
 
   <div class="gh-search">
@@ -311,7 +320,7 @@
           </a>
         </div>
         <div class="link-card">
-          <a href="https://outlook.office.com/mail/deeplink/compose?to=OEIT-GBG-DA-F26%40ek.dk%3Bcllj%40ek.dk%3Bjean%40ek.dk%3Bmokj%40ek.dk%3Bjenr%40ek.dk%3Bguin%40ek.dk" target="_blank" rel="noopener noreferrer">
+          <a href="https://outlook.office.com/mail/deeplink/compose?to=OEIT-GBG-DA-F26@ek.dk,cllj@ek.dk,jean@ek.dk,mokj@ek.dk,jenr@ek.dk,guin@ek.dk" target="_blank" rel="noopener noreferrer">
             <i class="bi bi-envelope-plus"></i>
             <div class="link-card-title">Skriv klassen</div>
             <div class="link-card-sub">Hele F26</div>
@@ -414,7 +423,7 @@
               </a>
             </div>
             <div class="link-card">
-              <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-e25a%40stud.kea.dk%3Bcllj%40ek.dk%3Bjean%40ek.dk%3Bjame%40ek.dk%3Bjenr%40ek.dk%3Bguin%40ek.dk%3Bbeni%40ek.dk%3Bmokj%40ek.dk" target="_blank" rel="noopener noreferrer">
+              <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-e25a@stud.kea.dk,cllj@ek.dk,jean@ek.dk,jame@ek.dk,jenr@ek.dk,guin@ek.dk,beni@ek.dk,mokj@ek.dk" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-envelope-plus"></i>
                 <div class="link-card-title">Skriv Hold A</div>
                 <div class="link-card-sub">Mail til E25A</div>
@@ -476,7 +485,7 @@
               </a>
             </div>
             <div class="link-card">
-              <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-e25b%40stud.kea.dk%3Bcllj%40ek.dk%3Bjean%40ek.dk%3Bjame%40ek.dk%3Bjenr%40ek.dk%3Bguin%40ek.dk%3Bbeni%40ek.dk%3Bmokj%40ek.dk" target="_blank" rel="noopener noreferrer">
+              <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-e25b@stud.kea.dk,cllj@ek.dk,jean@ek.dk,jame@ek.dk,jenr@ek.dk,guin@ek.dk,beni@ek.dk,mokj@ek.dk" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-envelope-plus"></i>
                 <div class="link-card-title">Skriv Hold B</div>
                 <div class="link-card-sub">Mail til E25B</div>
@@ -610,7 +619,7 @@
           </a>
         </div>
         <div class="link-card">
-          <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-f25%40stud.kea.dk%3Bcllj%40ek.dk%3Bjean%40ek.dk%3Bulpe%40ek.dk%3Bjenr%40ek.dk%3Bguin%40ek.dk" target="_blank" rel="noopener noreferrer">
+          <a href="https://outlook.office.com/mail/deeplink/compose?to=okit-gbg-f25@stud.kea.dk,cllj@ek.dk,jean@ek.dk,ulpe@ek.dk,jenr@ek.dk,guin@ek.dk" target="_blank" rel="noopener noreferrer">
             <i class="bi bi-envelope-plus"></i>
             <div class="link-card-title">Skriv klassen</div>
             <div class="link-card-sub">Hele F25</div>
@@ -631,7 +640,7 @@
       </defs>
     </svg>
     <img src="https://www.ek.dk/media/ixcclve3/ek_logo_business-blue_rgb.png" alt="EK logo">
-    <span>© 2026 <a href="mailto:guin@ek.dk">guin@ek.dk</a></span>
+    <span><button id="canada-theme-trigger" class="gh-secret-theme-trigger" type="button" aria-label="Toggle secret Canada theme">©</button> 2026 <a href="mailto:guin@ek.dk">guin@ek.dk</a></span>
   </footer>
 
 </div>
@@ -646,7 +655,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const THEME_STORAGE_KEY = 'guinhub-theme-choice';
   const DEFAULT_THEME_ID = 'vinyl-lounge';
+  const canadaTheme = {
+    id: 'secret-canada',
+    name: 'Canada',
+    mode: 'light',
+    primary: '#B51F35',
+    accent: '#176344',
+    support: '#A96832',
+    atmosphere: '#8BC9D8',
+    background: '#D7E9EC',
+    surface: '#F5EEDF',
+    surfaceSoft: '#E8E3CF',
+    text: '#26373B',
+    muted: '#48575A',
+    onPrimary: '#FFFFFF'
+  };
   const themes = [
+    {
+      id: 'summer-99',
+      name: "Summer '99",
+      mode: 'light',
+      primary: '#075563',
+      accent: '#A3324C',
+      support: '#B23F56',
+      atmosphere: '#FFD35C',
+      background: '#A8E4E8',
+      surface: '#F4DFAF',
+      surfaceSoft: '#EED5A0',
+      text: '#183D46',
+      muted: '#3E5A60',
+      onPrimary: '#FFF9E9'
+    },
+    {
+      id: 'halloween-99',
+      name: "Halloween '99",
+      mode: 'dark',
+      primary: '#FFB057',
+      accent: '#BDE46B',
+      support: '#B48CDE',
+      atmosphere: '#6F448D',
+      background: '#17151B',
+      surface: '#292332',
+      surfaceSoft: '#392C40',
+      text: '#F5EFF3',
+      muted: '#CABDD1',
+      onPrimary: '#251529'
+    },
+    {
+      id: 'christmas-99',
+      name: "Christmas '99",
+      mode: 'dark',
+      primary: '#FFE09A',
+      accent: '#FFE09A',
+      support: '#77B88A',
+      atmosphere: '#77B88A',
+      background: '#103D2E',
+      surface: '#681F32',
+      surfaceSoft: '#7A2A3D',
+      text: '#FFF8EE',
+      muted: '#E7CBC9',
+      onPrimary: '#3E1520'
+    },
     {
       id: 'vinyl-lounge',
       name: 'Vinyl Lounge',
@@ -981,6 +1050,209 @@ document.addEventListener('DOMContentLoaded', () => {
     return themes.find(theme => theme.id === themeId) || themes.find(theme => theme.id === DEFAULT_THEME_ID);
   }
 
+  const musicToggle = document.getElementById('music-toggle');
+  const musicStatus = document.getElementById('music-status');
+  const jingleBellsMidi = 'TVRoZAAAAAYAAQADAeBNVHJrAAAAPgD/AydKaW5nbGUgQmVsbHMgLSBHVUlOaHViIGJlbGwgYXJyYW5nZW1lbnQA/1EDBoobAP9YBAQCGAgA/y8ATVRyawAAAeIA/wMMSmluZ2xlIEJlbGxzAMAKAJBAToM9gEAAI5BAToM9gEAAI5BATocdgEAAI5BAToM9gEAAI5BAToM9gEAAI5BATocdgEAAI5BAToM9gEAAI5BDToM9gEMAI5A8ToUtgDwAI5A+ToFNgD4AI5BATo5dgEAAI5BBToM9gEEAI5BBToM9gEEAI5BBToUtgEEAI5BBToFNgEEAI5BBToM9gEEAI5BAToM9gEAAI5BAToM9gEAAI5BAToFNgEAAI5BAToFNgEAAI5BAToM9gEAAI5A+ToM9gD4AI5A+ToM9gD4AI5BAToM9gEAAI5A+TocdgD4AI5BDTocdgEMAI5BAToM9gEAAI5BAToM9gEAAI5BATocdgEAAI5BAToM9gEAAI5BAToM9gEAAI5BATocdgEAAI5BAToM9gEAAI5BDToM9gEMAI5A8ToUtgDwAI5A+ToFNgD4AI5BATo5dgEAAI5BBToM9gEEAI5BBToM9gEEAI5BBToUtgEEAI5BBToFNgEEAI5BBToM9gEEAI5BAToM9gEAAI5BAToM9gEAAI5BAToFNgEAAI5BAToFNgEAAI5BDToM9gEMAI5BDToM9gEMAI5BBToM9gEEAI5A+ToM9gD4AI5A8To5dgDwAAP8vAE1UcmsAAAFaAP8DEENocmlzdG1hcyBjaGltZXMAwAoAkDAmhiCAMACBIJA3H4YggDcAgSCQMCaGIIAwAIEgkDcfhiCANwCBIJAwJoYggDAAgSCQNx+GIIA3AIEgkDAmhiCAMACBIJA3H4YggDcAgSCQNSaGIIA1AIEgkDwfhiCAPACBIJAwJoYggDAAgSCQNx+GIIA3AIEgkDcmhiCANwCBIJA+H4YggD4AgSCQNyaGIIA3AIEgkD4fhiCAPgCBIJAwJoYggDAAgSCQNx+GIIA3AIEgkDAmhiCAMACBIJA3H4YggDcAgSCQMCaGIIAwAIEgkDcfhiCANwCBIJAwJoYggDAAgSCQNx+GIIA3AIEgkDUmhiCANQCBIJA8H4YggDwAgSCQMCaGIIAwAIEgkDcfhiCANwCBIJA3JoYggDcAgSCQPh+GIIA+AIEgkDAmhiCAMACBIJA3H4YggDcAAP8vAA==';
+  const diesIraeMidi = 'TVRoZAAAAAYAAQADAeBNVHJrAAAAPAD/AyVEaWVzIGlyYWUgLSBHVUlOaHViIG9yZ2FuIGFycmFuZ2VtZW50AP9RAwy3NQD/WAQEAhgIAP8vAE1UcmsAAAIvAP8DGk1lZGlldmFsIERpZXMgaXJhZSBvcGVuaW5nAMATAJA1SYM4gDUAKJA0SYM4gDQAKJA1SYM4gDUAKJAySYM4gDIAKJA0SYM4gDQAKJAwSYM4gDAAKJAySYM4gDIAKJAySYM4gDIAKJA1SYM4gDUAKJA1SYFIgDUAKJA3SYFIgDcAKJA1SYFIgDUAKJA0SYFIgDQAKJAySYFIgDIAKJAwSYFIgDAAKJA0SYM4gDQAKJA1SYM4gDUAKJA0SYM4gDQAKJAySYM4gDIAKJAtSYM4gC0AKJAwSYFIgDAAKJAySYFIgDIAKJAySYM4gDIAKJAySYFIgDIAKJAwSYFIgDAAKJA0SYM4gDQAKJA1SYM4gDUAKJA0SYM4gDQAKJAySYM4gDIAKJA1SYM4gDUAKJA0SYM4gDQAKJA1SYM4gDUAKJAySYM4gDIAKJA0SYM4gDQAKJAwSYM4gDAAKJAySYM4gDIAKJAySYM4gDIAKJA1SYM4gDUAKJA1SYFIgDUAKJA3SYFIgDcAKJA1SYFIgDUAKJA0SYFIgDQAKJAySYFIgDIAKJAwSYFIgDAAKJA0SYM4gDQAKJA1SYM4gDUAKJA0SYM4gDQAKJAySYM4gDIAKJAtSYM4gC0AKJAwSYFIgDAAKJAySYFIgDIAKJAySYM4gDIAKJAySYFIgDIAKJAwSYFIgDAAKJA0SYM4gDQAKJA1SYM4gDUAKJA0SYM4gDQAKJAySYM4gDIAAP8vAE1UcmsAAACBAP8DEExvdyBvcmdhbiBwZWRhbHMAwBMAkCYbAJAtG50IgCYAAIAtAHiQJhsAkC0bnQiAJgAAgC0AeJAmGwCQLRudCIAmAACALQB4kCYbAJAtG50IgCYAAIAtAHiQJhsAkC0bnQiAJgAAgC0AeJAmGwCQLRudCIAmAACALQAA/y8A';
+  const alohaOeMidi = 'TVRoZAAAAAYAAQADAeBNVHJrAAAAPQD/AyZBbG9oYSBPZSAtIEdVSU5odWIgcmVmcmFpbiBhcnJhbmdlbWVudAD/UQMKZ1oA/1gEBAIYCAD/LwBNVHJrAAAA6gD/AxBBbG9oYSBPZSByZWZyYWluAMAajRCQP1KBV4A/ABmQQVKDR4BBABmQRFKDR4BEABmQSVKFN4BJABmQQVKBV4BBABmQP1KDR4A/ABmQRFKDR4BEABmQSFKFN4BIABmQRFKBV4BEABmQQ1KCT4BDABmQQVJfgEEAGZBDUoFXgEMAGZBEUoFXgEQAGZBGUoFXgEYAGZBGUoFXgEYAGZBJUoFXgEkAGZBJUoFXgEkAGZBIUocngEgAGZBEUoU3gEQAGZA/UoFXgD8AGZA/UoNHgD8AGZBBUoNHgEEAGZBEUocngEQAAP8vAE1UcmsAAAHXAP8DHFBsdWNrZWQgaXNsYW5kIGFjY29tcGFuaW1lbnQAwBgAkDgtgTmAOAA3kD8jgTmAPwA3kDwtgTmAPAA3kD8jgTmAPwA3kDgtgTmAOAA3kD8jgTmAPwA3kDwtgTmAPAA3kD8jgTmAPwA3kDUtgTmANQA3kD0jgTmAPQA3kDgtgTmAOAA3kD0jgTmAPQA3kDUtgTmANQA3kD0jgTmAPQA3kDgtgTmAOAA3kD0jgTmAPQA3kDgtgTmAOAA3kD8jgTmAPwA3kDwtgTmAPAA3kD8jgTmAPwA3kDgtgTmAOAA3kD8jgTmAPwA3kDwtgTmAPAA3kD8jgTmAPwA3kDctgTmANwA3kD8jgTmAPwA3kDotgTmAOgA3kD8jgTmAPwA3kDctgTmANwA3kD8jgTmAPwA3kDotgTmAOgA3kD8jgTmAPwA3kDgtgTmAOAA3kD8jgTmAPwA3kDwtgTmAPAA3kD8jgTmAPwA3kDgtgTmAOAA3kD8jgTmAPwA3kDwtgTmAPAA3kD8jgTmAPwA3kDgtgTmAOAA3kD8jgTmAPwA3kDwtgTmAPAA3kD8jgTmAPwA3kDgtgTmAOAA3kD8jgTmAPwA3kDwtgTmAPAA3kD8jgTmAPwAA/y8A';
+  const oCanadaMidi = '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AURABEMAEDoABywAA0QAATgAACs6ATdFBEY4AUM1AzoxBUEAZSsABDJBAyY7AjcAOkE4AERBAkMACEYAK0EABkM8AT85AzIAACYABCc4ADNFBUQATToACUMABT8ADScAAj0wATMAADo0AENBBTRJAihCZz0AADoAC0FMADo5AT49ASgAAUMAAzVUASlCBTQAZkEADkE4AEZEYz4AA0YACykABkZCAToAAjw5AD81AilLAR06AkEACjUALUVMCUYANENEBkUANEVIAx0AB0MAEj8AGUZDAkE7AT41ADoyAkUAAzwAACkAAyJCAC5IUEEABkYABT4ACDoAByIAAixSAThIATo9AT5iBC4AZzoACiwAATgAATo7AD9PAjxFAjdWACtJBD4AXjoAATwADD8AADo1AT5GATcAACsAADhAAEFFBSlFADViXToAAjgACz4AATUAASkAAkEABzpAAT9HAENFAjdDAjNUACdJgV06AAA3AAY/AAUnAAY6OwBGRgFBQAAyWAEmRgdDAAEzAIERRgAYRkkIQQAvRgABJgADMgABP0cCMFoAPDkBNzgAJEMDOgBUJAAGMAAbK2JjKwAWMF0VPAADPwACNwBDMAAZMlErMgALM2QrMwAcNU0BKT4DREYBPDwAQT4BODGBWTwAAkEAATgAC0E8ACxOAUhLACA+ADxDASkAB0QAAjUAgQ1IABdITyQgAAJBAAEsABAuSQEiRQNBSQI6KgI+KwRIAAI8AGMuAAEiAAcpTHApAAcuSXNBAAI+AAI6AAIuAAczVCszAA81ZCs1ABI/RABGRQA3VAErQQA6OIFsPwAHQ0IAM0kAPUMAR0sAJz4COgABNwAGKwAcRgCBAUcADEdVNzMAA0hJAURAAUcAADhEAD8pAiw4ADw4AT0AA0MAAScASSwAEzwAAz8AA0QAATgABz81AUQ+ATwzAylGAR0/AkgAXR0AAikAEytGAB9FAUNFADo2ATwAAT8AAEA2BEQAVisACx8AC0AABToAAEFLASxEADgrACA7ADw9BUMAaTwAATgAASAAAiwABTorAT9GAjdEAkEAAi5EACJBgWcuAAAiAAE/AAQ3AAYuPwFBSQAiNgY4LwE+NYFeLgADPgAEIgAAOAAAM0ABJzoAP0IAQz8CNzcJQQBdMwAHJwAGLkUDIkJrLgABIgAEJ08AM1NtMwADJwAG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';
+  const seasonalMusic = {
+    'secret-canada': { title: 'O Canada', midi: oCanadaMidi, voice: 'midi' },
+    'summer-99': { title: 'Aloha \u02BBOe - Lili\u02BBuokalani', midi: alohaOeMidi, voice: 'island' },
+    'christmas-99': { title: 'Jingle Bells', midi: jingleBellsMidi, voice: 'bells' },
+    'halloween-99': { title: 'Dies irae - middelalderlig melodi', midi: diesIraeMidi, voice: 'organ' }
+  };
+  const parsedMusic = new Map();
+  let musicContext;
+  let musicScheduleTimer;
+  let musicRequest = 0;
+  let scheduledMusicNodes = new Set();
+  let musicEvents = [];
+  let musicDuration = 0;
+  let musicStartTime = 0;
+  let musicNoteIndex = 0;
+  let musicLoopIndex = 0;
+  musicToggle.checked = false;
+
+  function scheduleMidiNote(event, startTime, song) {
+    const { note, instrument } = event;
+    const isOrgan = song.voice === 'organ';
+    const isIsland = song.voice === 'island';
+    const isIslandLead = isIsland && instrument === 26;
+    const isStringTrack = song.voice === 'midi' && instrument === 48;
+    const isPianoTrack = song.voice === 'midi' && instrument === 0;
+    const endTime = startTime + Math.max(note.duration, 0.04) + 0.18;
+    const partials = isOrgan || isIsland || isStringTrack ? [1, 2, 3] : [1, 2.76];
+
+    partials.forEach((partial, index) => {
+      const oscillator = musicContext.createOscillator();
+      const gain = musicContext.createGain();
+      const frequency = 440 * 2 ** ((note.midi - 69) / 12) * partial;
+      oscillator.frequency.value = frequency;
+      if (isIslandLead) {
+        oscillator.frequency.setValueAtTime(frequency * 0.985, startTime);
+        oscillator.frequency.exponentialRampToValueAtTime(frequency, startTime + 0.075);
+      }
+
+      gain.gain.setValueAtTime(0, startTime);
+      if (isStringTrack) {
+        const volume = note.velocity * (index === 0 ? 0.12 : index === 1 ? 0.035 : 0.015);
+        const attack = Math.min(0.14, note.duration * 0.4);
+        gain.gain.linearRampToValueAtTime(volume, startTime + attack);
+        gain.gain.linearRampToValueAtTime(volume * 0.88, Math.max(startTime + attack, endTime - 0.2));
+      } else if (isIsland) {
+        const volume = note.velocity * (index === 0 ? 0.14 : 0.025);
+        const attack = isIslandLead ? 0.025 : 0.004;
+        gain.gain.linearRampToValueAtTime(volume, startTime + attack);
+        gain.gain.exponentialRampToValueAtTime(isIslandLead ? volume * 0.45 : 0.0001, endTime - 0.08);
+      } else if (isOrgan) {
+        const volume = note.velocity * (index === 0 ? 0.12 : 0.025);
+        gain.gain.linearRampToValueAtTime(volume, startTime + 0.06);
+        gain.gain.linearRampToValueAtTime(volume * 0.8, Math.max(startTime + 0.06, endTime - 0.28));
+      } else {
+        const volume = note.velocity * (index === 0 ? 0.14 : 0.035);
+        gain.gain.linearRampToValueAtTime(volume, startTime + (isPianoTrack ? 0.004 : 0.008));
+        gain.gain.exponentialRampToValueAtTime(0.0001, endTime - 0.01);
+      }
+      gain.gain.linearRampToValueAtTime(0, endTime);
+      oscillator.connect(gain);
+      gain.connect(musicContext.destination);
+      const activeNode = { oscillator, gain };
+      scheduledMusicNodes.add(activeNode);
+      oscillator.onended = () => {
+        oscillator.disconnect();
+        gain.disconnect();
+        scheduledMusicNodes.delete(activeNode);
+      };
+      oscillator.start(startTime);
+      oscillator.stop(endTime);
+    });
+  }
+
+  function scheduleUpcomingNotes(request, song) {
+    if (request !== musicRequest || !musicToggle.checked || !musicEvents.length) return;
+    const scheduleUntil = musicContext.currentTime + 0.35;
+
+    while (true) {
+      if (musicNoteIndex >= musicEvents.length) {
+        musicNoteIndex = 0;
+        musicLoopIndex++;
+      }
+      const event = musicEvents[musicNoteIndex];
+      const startTime = musicStartTime + musicLoopIndex * musicDuration + event.time;
+      if (startTime > scheduleUntil) return;
+      scheduleMidiNote(event, startTime, song);
+      musicNoteIndex++;
+    }
+  }
+
+  function stopSeasonalMusic() {
+    musicRequest++;
+    musicToggle.checked = false;
+    musicStatus.hidden = true;
+    window.clearInterval(musicScheduleTimer);
+    musicScheduleTimer = undefined;
+    scheduledMusicNodes.forEach(({ oscillator, gain }) => {
+      try {
+        oscillator.stop();
+      } catch (error) {
+      }
+      oscillator.disconnect();
+      gain.disconnect();
+    });
+    scheduledMusicNodes.clear();
+    musicEvents = [];
+    if (musicContext) musicContext.suspend().catch(() => {});
+  }
+
+  musicToggle.addEventListener('change', async () => {
+    const themeId = document.documentElement.dataset.themeId;
+    const song = seasonalMusic[themeId];
+    if (!musicToggle.checked || !song) {
+      stopSeasonalMusic();
+      return;
+    }
+
+    const request = ++musicRequest;
+    musicStatus.hidden = true;
+    try {
+      musicContext ||= new AudioContext();
+      await musicContext.resume();
+      if (request !== musicRequest) return;
+      let midi = parsedMusic.get(themeId);
+      if (!midi) {
+        midi = new Midi(Uint8Array.from(atob(song.midi), character => character.charCodeAt(0)));
+        parsedMusic.set(themeId, midi);
+      }
+      const events = midi.tracks.flatMap(track => track.notes.map(note => ({ note, instrument: track.instrument.number })));
+      const firstNoteTime = Math.min(...events.map(event => event.note.time));
+      musicEvents = events.map(event => ({ ...event, time: event.note.time - firstNoteTime }))
+        .sort((left, right) => left.time - right.time);
+      musicDuration = midi.duration - firstNoteTime;
+      musicStartTime = musicContext.currentTime + 0.04;
+      musicNoteIndex = 0;
+      musicLoopIndex = 0;
+      scheduleUpcomingNotes(request, song);
+      musicScheduleTimer = window.setInterval(() => scheduleUpcomingNotes(request, song), 100);
+    } catch (error) {
+      if (request !== musicRequest) return;
+      stopSeasonalMusic();
+      parsedMusic.delete(themeId);
+      musicStatus.textContent = 'Musikken kunne ikke startes. Prøv igen.';
+      musicStatus.hidden = false;
+    }
+  });
+
+  window.addEventListener('pagehide', stopSeasonalMusic);
+
+  const seasonalEffects = {
+    'christmas-99': {
+      label: 'Sne', className: 'gh-snow', symbols: ['\u2744', '\u2745', '\u2746', '*'],
+      count: 48, minSize: 12, minOpacity: 0.4, opacityRange: 0.45
+    },
+    'halloween-99': {
+      label: 'Uhygge', className: 'gh-snow gh-halloween', symbols: ['\u{1F987}', '\u{1F383}'],
+      count: 30, minSize: 24, minOpacity: 0.65, opacityRange: 0.3
+    },
+    'summer-99': {
+      label: 'Sommer', className: 'gh-snow gh-summer', symbols: ['\u26F1\uFE0F', '\u{1F379}', '\u{1F334}'],
+      count: 24, minSize: 26, minOpacity: 0.7, opacityRange: 0.25
+    },
+    'secret-canada': {
+      label: 'Eh?', className: 'gh-snow gh-canada', symbols: ['\u{1F341}', '\u{1F3D2}', '\u{1F9AB}', '\u{1FAD9}', '\u{1F341}', '\u{1F95E}', '\u{1F3D2}', '\u{1F1E8}\u{1F1E6}', '\u{1F9AB}', '\u{1F341}', '\u{1FAD9}', '\u{1F95E}', 'EH?', 'SORRY', '\u{1F3D2}', '\u{1F9AB}'],
+      count: 32, minSize: 24, minOpacity: 0.75, opacityRange: 0.25
+    }
+  };
+
+  function updateSeasonalEffects(themeId) {
+    const effects = seasonalEffects[themeId];
+    const snowToggle = document.getElementById('snow-toggle');
+    document.getElementById('snow-control').hidden = !effects;
+    document.getElementById('effects-label').textContent = effects ? effects.label : 'Sne';
+    document.getElementById('seasonal-effects')?.remove();
+    if (!effects || !snowToggle.checked) return;
+
+    const snow = document.createElement('div');
+    snow.id = 'seasonal-effects';
+    snow.className = effects.className;
+    snow.setAttribute('aria-hidden', 'true');
+
+    for (let index = 0; index < effects.count; index++) {
+      const flake = document.createElement('span');
+      flake.className = 'gh-snowflake';
+      flake.textContent = effects.symbols[index % effects.symbols.length];
+      flake.style.left = `${Math.random() * 100}%`;
+      flake.style.fontSize = `${effects.minSize + Math.random() * 16}px`;
+      flake.style.opacity = `${effects.minOpacity + Math.random() * effects.opacityRange}`;
+      flake.style.animationDuration = `${10 + Math.random() * 14}s`;
+      flake.style.animationDelay = `${-Math.random() * 24}s`;
+      flake.style.setProperty('--snow-drift', `${Math.random() * 100 - 50}px`);
+      snow.appendChild(flake);
+    }
+
+    document.body.appendChild(snow);
+  }
+
   function applyTheme(theme) {
     const { primary, accent } = theme;
     const rootStyle = document.documentElement.style;
@@ -992,6 +1264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isReferenceTheme = referenceThemeIds.has(theme.id);
 
     document.documentElement.dataset.themeMode = theme.mode;
+    document.documentElement.dataset.themeId = theme.id;
     rootStyle.setProperty('color-scheme', theme.mode);
     rootStyle.setProperty('--page-bg', theme.background);
     rootStyle.setProperty('--page-blue', primary);
@@ -1013,6 +1286,15 @@ document.addEventListener('DOMContentLoaded', () => {
     rootStyle.setProperty('--page-pill-bg', `rgba(${supportRgb.r}, ${supportRgb.g}, ${supportRgb.b}, ${darkMode ? 0.18 : 0.2})`);
     rootStyle.setProperty('--page-pill-text', theme.text);
     rootStyle.setProperty('--page-icon-color', accent);
+    updateSeasonalEffects(theme.id);
+    const song = seasonalMusic[theme.id];
+    document.getElementById('music-control').hidden = !song;
+    document.getElementById('music-control').title = song ? song.title : '';
+    stopSeasonalMusic();
+    if (theme.id === canadaTheme.id) {
+      musicToggle.checked = true;
+      musicToggle.dispatchEvent(new Event('change'));
+    }
   }
 
   function getInitialThemeId() {
@@ -1027,10 +1309,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeSelect = document.getElementById('theme-select');
     if (!themeSelect) return;
 
-    ['light', 'dark'].forEach(mode => {
+    ['light', 'dark', 'seasonal'].forEach(category => {
       const group = document.createElement('optgroup');
-      group.label = mode === 'light' ? 'Light themes' : 'Dark themes';
-      themes.filter(theme => theme.mode === mode).forEach(theme => {
+      group.label = { seasonal: 'Seasonal', light: 'Light themes', dark: 'Dark themes' }[category];
+      themes.filter(theme => {
+        const themeCategory = seasonalEffects[theme.id] ? 'seasonal' : theme.mode;
+        return themeCategory === category;
+      }).forEach(theme => {
         const option = document.createElement('option');
         option.value = theme.id;
         option.textContent = theme.name;
@@ -1052,6 +1337,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   setupThemeSelector();
+
+  document.getElementById('snow-toggle').addEventListener('change', () => {
+    updateSeasonalEffects(document.documentElement.dataset.themeId);
+  });
+
+  document.getElementById('canada-theme-trigger').addEventListener('click', () => {
+    const themeSelect = document.getElementById('theme-select');
+    const nextTheme = document.documentElement.dataset.themeId === canadaTheme.id
+      ? getThemeById(themeSelect.value)
+      : canadaTheme;
+    applyTheme(nextTheme);
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+    });
+  });
 
   const headers = document.querySelectorAll('.collapsible-header');
 
