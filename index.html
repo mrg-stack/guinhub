@@ -1219,8 +1219,8 @@ document.addEventListener('DOMContentLoaded', () => {
       count: 24, minSize: 26, minOpacity: 0.7, opacityRange: 0.25
     },
     'secret-canada': {
-      label: 'Eh?', className: 'gh-snow gh-canada', symbols: ['\u{1F341}', '\u{1F3D2}', '\u{1F9AB}', '\u{1FAD9}', '\u{1F341}', '\u{1F95E}', '\u{1F3D2}', '\u{1F1E8}\u{1F1E6}', '\u{1F9AB}', '\u{1F341}', '\u{1FAD9}', '\u{1F95E}', 'EH?', 'SORRY', '\u{1F3D2}', '\u{1F9AB}'],
-      count: 32, minSize: 24, minOpacity: 0.75, opacityRange: 0.25
+      label: 'Eh?', className: 'gh-snow gh-canada', symbols: ['\u{1F341}', '\u{1F3D2}', '\u{1F9AB}', '\u{1FAD9}', '\u{1F1E8}\u{1F1E6}', '\u{1F95E}', 'Eh?', 'Sorry', 'Toque', 'Loonie', 'Toonie', 'Double-double', 'Timmies', 'Timbits', 'Poutine', 'Canuck', 'Tabarnak', "Give'r", 'Bunnyhug'],
+      count: 36, minSize: 24, minOpacity: 0.75, opacityRange: 0.25, wordStartIndex: 6
     }
   };
 
@@ -1241,6 +1241,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const flake = document.createElement('span');
       flake.className = 'gh-snowflake';
       flake.textContent = effects.symbols[index % effects.symbols.length];
+      if (effects.wordStartIndex !== undefined && index % effects.symbols.length >= effects.wordStartIndex) {
+        flake.classList.add('gh-canada-word');
+      }
       flake.style.left = `${Math.random() * 100}%`;
       flake.style.fontSize = `${effects.minSize + Math.random() * 16}px`;
       flake.style.opacity = `${effects.minOpacity + Math.random() * effects.opacityRange}`;
