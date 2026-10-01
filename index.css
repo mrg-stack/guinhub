@@ -805,7 +805,6 @@ body {
     transform: translate3d(var(--snow-drift), calc(100vh + 96px), 0) rotate(-12deg);
   }
 }
-}
 
 @keyframes summer-breeze {
   0% {
