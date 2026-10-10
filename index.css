@@ -663,6 +663,7 @@ a:hover {
 
 /* Fix tiled background / gradient */
 body {
+  isolation: isolate;
   background-color: var(--page-bg);
   background-image:
     radial-gradient(circle at 24% 22%, rgba(var(--page-primary-rgb), 0.16), transparent 58%),
@@ -672,6 +673,17 @@ body {
   background-attachment: fixed;
   background-size: 130% 130%;
   animation: gradient-drift 32s ease-in-out infinite alternate;
+}
+
+body::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background: url("https://www.ek.dk/media/2pxnlzmm/ek_sekundaert-logo_business-blue_rgb.png") center / min(110vw, 1700px) auto no-repeat;
+  content: "";
+  filter: url(#ek-logo-colour);
+  opacity: 0.035;
+  pointer-events: none;
 }
 
 @keyframes gradient-drift {
