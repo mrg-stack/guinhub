@@ -577,29 +577,37 @@ a:hover {
   color: var(--theme-on-primary);
 }
 
-/* Slightly more compact cards for the teacher section */
-.gh-section--teacher .link-card {
+/* Keep all non-semester cards the same compact size as EK */
+.gh-section--compact-grid .link-card {
+  box-sizing: border-box;
+  height: 96px;
   padding: 14px 16px;
 }
 
-.gh-section--teacher .link-card i {
+.gh-section--compact-grid .link-card i {
   font-size: 1.5rem;
   margin-bottom: 6px;
 }
 
-.gh-section--teacher .link-card-title {
+.gh-section--compact-grid .link-card-title {
   font-size: 0.9rem;
   margin-bottom: 2px;
 }
 
-.gh-section--teacher .link-card-sub {
+.gh-section--compact-grid .link-card-sub {
   font-size: 0.76rem;
 }
 
-/* Denser top-section grids with narrower cards */
+/* Non-semester sections use full-width, equal-height cards */
 .gh-section--compact-grid .link-grid {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 180px));
-  justify-content: start;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-auto-rows: 1fr;
+}
+
+@media (min-width: 960px) {
+  .gh-section--compact-grid .link-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 639px) {
