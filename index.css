@@ -676,12 +676,9 @@ body {
 }
 
 body::before {
-  position: absolute;
+  position: fixed;
   z-index: -1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
+  inset: 0;
   background: url("https://www.ek.dk/media/2pxnlzmm/ek_sekundaert-logo_business-blue_rgb.png") center / min(88vw, 1300px) auto no-repeat;
   content: "";
   filter: url(#ek-logo-colour);
