@@ -1,0 +1,44 @@
+name: Check public links
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 7 * * 1'
+  push:
+    paths:
+      - index.html
+      - scripts/check-links.mjs
+      - tests/check-links.test.mjs
+      - .github/workflows/check-links.yml
+  pull_request:
+    paths:
+      - index.html
+      - scripts/check-links.mjs
+      - tests/check-links.test.mjs
+      - .github/workflows/check-links.yml
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check public links
+        run: |
+          set -o pipefail
+          node --test tests/check-links.test.mjs
+          node scripts/check-links.mjs 2>&1 | tee link-check.log
+      - name: Publish results
+        if: always()
+        run: |
+          if [ -f link-check.log ]; then
+            printf '## Public link check\n\n```text\n' >> "$GITHUB_STEP_SUMMARY"
+            cat link-check.log >> "$GITHUB_STEP_SUMMARY"
+            printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
+          fi

@@ -19,6 +19,9 @@ It provides quick links to important tools and resources for both **teachers** a
 
 - **Utilities**
   - DuckDuckGo search bar
+  - Separate Filter panel for finding portal links by name, description, or section; Escape closes it
+  - Star buttons add or remove browser-local favourites in a dedicated shortcuts row
+  - Keyboard-accessible semester toggles with remembered open/closed sections
   - “Er det fredag?” automatic status
   - Mailto links to quickly contact the team or the class
 
@@ -26,11 +29,26 @@ It provides quick links to important tools and resources for both **teachers** a
 
 ## 📦 Files
 
-- `ek.html` → Main web portal page
+- [index.html](index.html) → Main web portal page
+- [index.css](index.css) → Theme and layout styling
+- [portal.js](portal.js) → Link filtering, favourites, and semester preferences
 - Uses:
   - **Bootstrap Icons** via CDN
-  - **Google Fonts (Roboto)**
-  - **Inline CSS** for easy standalone deployment
+  - **System fonts**
+  - **Static HTML, CSS, and JavaScript** with no backend
+
+Favourites and expanded sections are stored only in the current browser. The current semester and its roles start expanded on a first visit. Filtering temporarily reveals matching semester links without changing saved expansion preferences. Storage errors are reported on the page.
+
+## Link checks
+
+[Check public links](.github/workflows/check-links.yml) runs weekly, on relevant changes, and manually through GitHub Actions. Run it locally with Node.js 22 or newer:
+
+```sh
+node scripts/check-links.mjs
+node --test tests/check-links.test.mjs
+```
+
+The checker tests an explicit allowlist of public-resource hosts. Login-dependent services (including Office, EK internal systems, and mail/desktop deep links) require manual verification. HTTP 401, 403, and 429 responses are labelled for review rather than treated as broken links; other unsuccessful responses and network failures fail the check. Results appear in the workflow summary. Update the allowlist in [scripts/check-links.mjs](scripts/check-links.mjs) when adding new public-resource hosts.
 
 ---
 
@@ -46,4 +64,3 @@ https://mrg-stack.github.io/guinhub/
 - Halloween '99: [Dies irae](midi/dies-irae.mid), a new organ arrangement of the opening phrases of the public-domain medieval Gregorian chant. [Melody and historical background](https://en.wikipedia.org/wiki/Dies_irae#13th-century_Gregorian_chant).
 
 The seasonal arrangements other than O Canada were generated for this site. Playback uses the pinned `@tonejs/midi` parser and Web Audio synthesis. Embedded base64 copies in [index.html](index.html) allow playback from a local file URL; keep them byte-identical to the MIDI files when changing the music. Music is opt-in and stops when changing themes. Seasonal effects respect reduced-motion preferences.
-

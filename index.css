@@ -193,6 +193,90 @@ body {
   margin: 18px 0 24px;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+.gh-search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gh-search-row form {
+  flex: 0 1 380px;
+  min-width: 0;
+}
+
+.gh-search-input {
+  box-sizing: border-box;
+}
+
+.gh-control {
+  padding: 9px 13px;
+  border: 1px solid var(--page-border-soft);
+  border-radius: 999px;
+  background: var(--page-surface);
+  color: var(--page-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.gh-filter-panel:not([hidden]) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+:is(a, button, input, select):focus-visible {
+  outline: 3px solid var(--page-accent);
+  outline-offset: 4px;
+}
+
+.link-card:focus-within {
+  border-color: var(--page-blue);
+  box-shadow: var(--page-shadow);
+}
+
+.gh-favourite {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--page-surface);
+  color: var(--page-blue);
+  cursor: pointer;
+}
+
+.link-card .gh-favourite .bi {
+  font-size: 0.9rem;
+  margin: 0;
+  color: inherit;
+}
+
+.gh-section-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.gh-section-toggle[aria-expanded="true"] i {
+  transform: rotate(90deg);
+}
+
 .gh-search-input {
   width: 100%;
   max-width: 380px;
@@ -582,6 +666,11 @@ a:hover {
   box-sizing: border-box;
   height: 96px;
   padding: 14px 16px;
+}
+
+#favourites-grid .link-card {
+  height: auto;
+  min-height: 96px;
 }
 
 .gh-section--compact-grid .link-card i {
