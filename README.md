@@ -21,7 +21,9 @@ It provides quick links to important tools and resources for both **teachers** a
   - DuckDuckGo search bar
   - Separate Filter panel for finding portal links by name, description, or section; Escape closes it
   - Star buttons add or remove browser-local favourites in a dedicated shortcuts row
-  - Keyboard-accessible semester toggles with remembered open/closed sections
+  - Always-visible Favorites handles support mouse/touch dragging and arrow-key reordering; the order is saved in the current browser
+  - “Vis kun favoritter” hides all other link sections, including their headings, without changing their saved open/closed state; the checkbox choice persists across reloads in the current browser
+  - Keyboard-accessible toggles for every link section and semester subsection, with remembered open/closed state
   - “Er det fredag?” automatic status
   - Mailto links to quickly contact the team or the class
 

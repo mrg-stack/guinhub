@@ -25,11 +25,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const sectionKey = 'guinhub-open-sections';
+  const sectionKey = 'guinhub-open-sections-v2';
+  const previousOpenSections = readPreference('guinhub-open-sections',
+    value => Array.isArray(value) && value.every(id => typeof id === 'string'), []);
+  const sectionDefaults = [
+    'ek-links', 'office-links', 'development-links', 'hr-links',
+    'f26-content', 'f26-roles-content', 'e25a-links', 'e25b-links'
+  ];
   const openSections = new Set(readPreference(sectionKey,
     value => Array.isArray(value) && value.every(id => typeof id === 'string'),
-    ['f26-content', 'f26-roles-content']));
+    [...new Set([...previousOpenSections, ...sectionDefaults])]));
   const collapsibles = [];
+  const favouritesOnly = document.getElementById('favourites-only');
+  const favouritesOnlyKey = 'guinhub-favourites-only';
+  let favouritesOnlyMode = readPreference(favouritesOnlyKey, value => typeof value === 'boolean', false);
+  favouritesOnly.checked = favouritesOnlyMode;
+  function setFavouritesOnly(enabled) {
+    favouritesOnlyMode = enabled;
+    favouritesOnly.checked = enabled;
+    savePreference(favouritesOnlyKey, enabled);
+  }
   function setExpanded(entry, expanded) {
     entry.button.setAttribute('aria-expanded', String(expanded));
     entry.content.hidden = !expanded;
@@ -39,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   document.querySelectorAll('.collapsible-header').forEach(header => {
     const content = document.getElementById(header.dataset.target);
-    const title = header.querySelector('.gh-section-title');
+    const title = header.matches('.gh-section-title') ? header : header.querySelector('.gh-section-title');
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'gh-section-toggle';
@@ -56,10 +71,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (event.target.closest('button') !== button) button.click();
     });
     button.addEventListener('click', () => {
-      if (openSections.has(content.id)) openSections.delete(content.id);
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      if (favouritesOnlyMode) {
+        setFavouritesOnly(false);
+        openSections.clear();
+      }
+      if (isExpanded) openSections.delete(content.id);
       else openSections.add(content.id);
       savePreference(sectionKey, [...openSections]);
-      setExpanded(entry, openSections.has(content.id));
+      applyFilter();
     });
   });
 
@@ -70,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sections = [...document.querySelectorAll('.page-wrapper > section:not(#favourites-section)')];
   const favouritesGrid = document.getElementById('favourites-grid');
   const favouritesSection = document.getElementById('favourites-section');
+  const favouritesEmpty = document.getElementById('favourites-empty');
   const filter = document.getElementById('link-filter');
   const filterToggle = document.getElementById('filter-toggle');
   const filterPanel = document.getElementById('link-filter-panel');
@@ -81,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return {
       card, url: link.getAttribute('href'),
       title: card.querySelector('.link-card-title').textContent,
-      search: normalise(`${link.textContent} ${section.querySelector('.gh-section-title').textContent}`)
+      search: normalise(`${link.textContent} ${section.querySelector('.gh-section-title').textContent} ${card.closest('.e25-column')?.querySelector('h3')?.textContent || ''}`)
     };
   });
 
@@ -112,19 +133,90 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   function renderFavourites() {
     favouritesGrid.replaceChildren();
-    const rendered = new Set();
     entries.forEach(entry => {
       entry.card.querySelector('.gh-favourite')?.remove();
       addFavouriteButton(entry.card, entry);
-      if (!favourites.has(entry.url) || rendered.has(entry.url)) return;
-      rendered.add(entry.url);
+    });
+    favourites.forEach(url => {
+      const entry = entries.find(entry => entry.url === url);
+      if (!entry) return;
       const clone = entry.card.cloneNode(true);
       clone.hidden = false;
       clone.querySelector('.gh-favourite').remove();
       addFavouriteButton(clone, entry);
+      addDragHandle(clone, entry);
       favouritesGrid.append(clone);
     });
-    favouritesSection.hidden = favouritesGrid.children.length === 0;
+    updateFavouritesVisibility();
+  }
+  function moveFavourite(card, target) {
+    const children = [...favouritesGrid.children];
+    const forward = children.indexOf(card) < children.indexOf(target);
+    favouritesGrid.insertBefore(card, forward ? target.nextSibling : target);
+    favourites.clear();
+    [...favouritesGrid.children].forEach(item => {
+      favourites.add(item.querySelector('a').getAttribute('href'));
+    });
+    savePreference(favouriteKey, [...favourites]);
+    const position = [...favouritesGrid.children].indexOf(card) + 1;
+    document.getElementById('favourites-order-status').textContent =
+      `${card.querySelector('.link-card-title').textContent}: plads ${position} af ${favourites.size}`;
+  }
+  function addDragHandle(card, entry) {
+    const handle = document.createElement('button');
+    handle.type = 'button';
+    handle.className = 'gh-drag-handle';
+    handle.setAttribute('aria-label', `Flyt ${entry.title}`);
+    handle.setAttribute('aria-describedby', 'favourites-reorder-help');
+    handle.title = 'Træk for at flytte, eller brug piletasterne';
+    const icon = document.createElement('i');
+    icon.className = 'bi bi-three-dots-vertical';
+    icon.setAttribute('aria-hidden', 'true');
+    handle.append(icon);
+    card.append(handle);
+    let pointerId = null;
+    let dropTarget = null;
+    function finishDrag(event) {
+      if (event.pointerId !== pointerId) return;
+      const target = dropTarget;
+      pointerId = null;
+      dropTarget?.classList.remove('gh-drop-target');
+      dropTarget = null;
+      card.classList.remove('gh-dragging');
+      if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId);
+      if (event.type === 'pointerup' && target) moveFavourite(card, target);
+    }
+    handle.addEventListener('pointerdown', event => {
+      if (!event.isPrimary || event.button !== 0) return;
+      event.preventDefault();
+      handle.focus({ preventScroll: true });
+      pointerId = event.pointerId;
+      handle.setPointerCapture(pointerId);
+      card.classList.add('gh-dragging');
+    });
+    handle.addEventListener('pointermove', event => {
+      if (event.pointerId !== pointerId) return;
+      const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('.link-card');
+      dropTarget?.classList.remove('gh-drop-target');
+      dropTarget = target && target !== card && target.parentElement === favouritesGrid ? target : null;
+      dropTarget?.classList.add('gh-drop-target');
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => {
+      handle.addEventListener(type, finishDrag);
+    });
+    handle.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+      event.preventDefault();
+      const visible = [...favouritesGrid.children].filter(item => !item.hidden);
+      const direction = ['ArrowLeft', 'ArrowUp'].includes(event.key) ? -1 : 1;
+      const target = visible[visible.indexOf(card) + direction];
+      if (target) moveFavourite(card, target);
+    });
+  }
+  function updateFavouritesVisibility() {
+    const hasFavourites = favouritesGrid.children.length > 0;
+    favouritesSection.hidden = !hasFavourites && !favouritesOnlyMode;
+    favouritesEmpty.hidden = hasFavourites || !favouritesOnlyMode;
   }
   function applyFilter() {
     const terms = normalise(filter.value.trim()).split(/\s+/).filter(Boolean);
@@ -132,19 +224,18 @@ document.addEventListener('DOMContentLoaded', () => {
       entry.card.hidden = !terms.every(term => entry.search.includes(term));
     });
     sections.forEach(section => {
-      section.hidden = !entries.some(entry => section.contains(entry.card) && !entry.card.hidden);
+      section.hidden = favouritesOnlyMode || !entries.some(entry => section.contains(entry.card) && !entry.card.hidden);
     });
     collapsibles.forEach(entry => {
       const hasCards = entry.content.querySelector('.link-card');
-      setExpanded(entry, terms.length
-        ? Boolean(hasCards && entry.content.querySelector('.link-card:not([hidden])'))
-        : openSections.has(entry.content.id));
+      const hasMatches = Boolean(hasCards && entry.content.querySelector('.link-card:not([hidden])'));
+      setExpanded(entry, !favouritesOnlyMode && (terms.length ? hasMatches : openSections.has(entry.content.id)));
     });
     [...favouritesGrid.children].forEach(card => {
       const entry = entries.find(entry => entry.url === card.querySelector('a').getAttribute('href'));
       card.hidden = entry.card.hidden;
     });
-    favouritesSection.hidden = !favouritesGrid.querySelector('.link-card:not([hidden])');
+    updateFavouritesVisibility();
     const count = entries.filter(entry => !entry.card.hidden).length;
     filterStatus.textContent = terms.length ? `${count} links fundet` : '';
   }
@@ -157,7 +248,17 @@ document.addEventListener('DOMContentLoaded', () => {
       applyFilter();
     }
   });
-  filter.addEventListener('input', applyFilter);
+  filter.addEventListener('input', () => {
+    if (filter.value.trim() && favouritesOnlyMode) {
+      setFavouritesOnly(false);
+    }
+    applyFilter();
+  });
+  favouritesOnly.addEventListener('change', () => {
+    setFavouritesOnly(favouritesOnly.checked);
+    if (favouritesOnlyMode) filter.value = '';
+    applyFilter();
+  });
   document.getElementById('filter-clear').addEventListener('click', () => {
     filter.value = '';
     applyFilter();
@@ -170,4 +271,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   renderFavourites();
+  applyFilter();
 });

@@ -80,6 +80,9 @@ body {
 }
 
 .page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100% - 72px);
   max-width: 1040px;
   margin: 0 auto;
   padding: 32px 16px 40px;
@@ -87,6 +90,7 @@ body {
 
 @media (min-width: 768px) {
   .page-wrapper {
+    min-height: calc(100% - 96px);
     padding: 40px 24px 56px;
   }
 }
@@ -200,6 +204,7 @@ body {
 .gh-search-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -222,6 +227,20 @@ body {
   cursor: pointer;
 }
 
+.gh-favourites-only {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--page-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.gh-favourites-empty {
+  color: var(--page-muted);
+  font-size: 0.9rem;
+}
+
 .gh-filter-panel:not([hidden]) {
   display: flex;
   align-items: center;
@@ -240,7 +259,8 @@ body {
   box-shadow: var(--page-shadow);
 }
 
-.gh-favourite {
+.gh-favourite,
+.gh-drag-handle {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -254,10 +274,49 @@ body {
   cursor: pointer;
 }
 
-.link-card .gh-favourite .bi {
+.link-card .gh-favourite .bi,
+.link-card .gh-drag-handle .bi {
   font-size: 0.9rem;
   margin: 0;
   color: inherit;
+}
+
+.gh-drag-handle {
+  display: grid;
+  place-items: center;
+  top: 50%;
+  left: 1px;
+  right: auto;
+  width: 14px;
+  height: 30px;
+  transform: translateY(-50%);
+  line-height: 1;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.gh-dragging {
+  opacity: 0.6;
+}
+
+.gh-dragging .gh-drag-handle {
+  cursor: grabbing;
+}
+
+.gh-drop-target {
+  outline: 2px dashed var(--page-blue);
+  outline-offset: 2px;
+}
+
+.gh-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .gh-section-toggle {
@@ -271,6 +330,10 @@ body {
   font: inherit;
   text-align: left;
   cursor: pointer;
+}
+
+.gh-section-toggle .bi {
+  transition: transform 150ms ease-out;
 }
 
 .gh-section-toggle[aria-expanded="true"] i {
@@ -309,6 +372,20 @@ body {
   margin-bottom: 26px;
 }
 
+.page-wrapper > .gh-section {
+  --section-padding: 16px;
+  padding: var(--section-padding);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+@media (max-width: 639px) {
+  .page-wrapper > .gh-section {
+    --section-padding: 12px;
+  }
+}
+
 .gh-section-header {
   display: flex;
   align-items: baseline;
@@ -320,6 +397,33 @@ body {
   font-size: 1.05rem;
   font-weight: 720;
   color: var(--page-blue);
+}
+
+.page-wrapper > .gh-section > .gh-section-header {
+  margin: calc(-1 * var(--section-padding)) calc(-1 * var(--section-padding)) 14px;
+  padding: 12px var(--section-padding);
+  border-bottom: 1px solid var(--page-border-soft);
+  border-radius: 19px 19px 0 0;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.page-wrapper > .gh-section > .gh-section-header .gh-section-title {
+  width: 100%;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: 0.015em;
+}
+
+.page-wrapper > .gh-section > .gh-section-header .gh-section-toggle {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.page-wrapper > .gh-section > .gh-section-header .gh-section-toggle .bi {
+  order: 1;
+  font-size: 0.8rem;
+  opacity: 0.7;
 }
 
 .gh-section-pill {
@@ -506,7 +610,7 @@ body {
    =================================== */
 
 .gh-footer {
-  margin-top: 32px;
+  margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--page-border-soft);
   font-size: 0.8rem;
@@ -668,11 +772,6 @@ a:hover {
   padding: 14px 16px;
 }
 
-#favourites-grid .link-card {
-  height: auto;
-  min-height: 96px;
-}
-
 .gh-section--compact-grid .link-card i {
   font-size: 1.5rem;
   margin-bottom: 6px;
@@ -689,7 +788,7 @@ a:hover {
 
 /* Non-semester sections use full-width, equal-height cards */
 .gh-section--compact-grid .link-grid {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-auto-rows: 1fr;
 }
 
@@ -703,6 +802,10 @@ a:hover {
   .link-grid,
   .gh-section--compact-grid .link-grid {
     grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+  }
+
+  .gh-section--compact-grid .link-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
   }
 
   .link-card {
