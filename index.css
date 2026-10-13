@@ -104,28 +104,15 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  flex-wrap: wrap;
   margin-bottom: 26px;
 }
 
 .gh-title-row {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 14px;
-}
-
-.gh-logo-circle {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: var(--page-blue);
-  color: var(--theme-on-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 750;
-  font-size: 20px;
-  box-shadow: var(--page-shadow);
 }
 
 .gh-title {
@@ -142,25 +129,60 @@ body {
   color: var(--page-muted);
 }
 
-.gh-theme-picker {
-  margin-top: 0;
-  margin-left: auto;
-  display: inline-flex;
-  flex-wrap: wrap;
-  max-width: 100%;
-  box-sizing: border-box;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: var(--page-surface-soft);
-  border: 1px solid var(--page-border-soft);
+.gh-menu {
+  position: relative;
+  flex-shrink: 0;
 }
 
-@media (max-width: 640px) {
-  .gh-theme-picker {
-    margin-left: 0;
-  }
+.gh-menu-toggle {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+.gh-settings-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 10;
+  width: 320px;
+  max-width: calc(100vw - 48px);
+  box-sizing: border-box;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--page-surface);
+  border: 1px solid var(--page-border-soft);
+  box-shadow: var(--page-shadow);
+}
+
+.gh-settings-panel:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gh-settings-title {
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--page-border-soft);
+  font-size: 1rem;
+  color: var(--page-text);
+}
+
+.gh-settings-panel .gh-theme-select {
+  width: 100%;
+  max-width: none;
+}
+
+.gh-theme-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 0;
 }
 
 .gh-theme-label {

@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="index.css?v=20261012g">
-  <script defer src="portal.js?v=20261012e"></script>
+  <link rel="stylesheet" href="index.css?v=20261013a">
+  <script defer src="portal.js?v=20261013a"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.28/build/Midi.js"></script>
 </head>
 
@@ -16,25 +16,47 @@
 
   <header class="gh-header">
     <div class="gh-title-row">
-      <div class="gh-logo-circle">ØK</div>
       <div>
         <h1 id="gh-title" class="gh-title">GUINhub</h1>
         <p class="gh-tagline">Din genvej til alt Økonomi &amp; IT</p>
       </div>
     </div>
-    <div class="gh-theme-picker" aria-label="Temavalg">
-      <label class="gh-theme-label" for="theme-select">Tema</label>
-      <select id="theme-select" class="gh-theme-select"></select>
-      <label id="snow-control" class="gh-snow-toggle" hidden>
-        <input id="snow-toggle" type="checkbox" checked>
-        <span id="effects-label">Sne</span>
-      </label>
-      <label id="music-control" class="gh-music-toggle" title="Jingle Bells" hidden>
-        <input id="music-toggle" type="checkbox">
-        Musik
-      </label>
+    <div class="gh-menu">
+      <button id="menu-toggle" class="gh-control gh-menu-toggle" type="button" aria-label="Indstillinger" aria-expanded="false" aria-controls="settings-panel">
+        <i class="bi bi-list" aria-hidden="true"></i>
+      </button>
+      <div id="settings-panel" class="gh-settings-panel" role="region" aria-labelledby="settings-title" hidden>
+        <h2 id="settings-title" class="gh-settings-title">Indstillinger</h2>
+        <div>
+          <div class="gh-theme-picker" aria-label="Temavalg">
+            <label class="gh-theme-label" for="theme-select">Tema</label>
+            <select id="theme-select" class="gh-theme-select"></select>
+            <label id="snow-control" class="gh-snow-toggle" hidden>
+              <input id="snow-toggle" type="checkbox" checked>
+              <span id="effects-label">Sne</span>
+            </label>
+            <label id="music-control" class="gh-music-toggle" title="Jingle Bells" hidden>
+              <input id="music-toggle" type="checkbox">
+              Musik
+            </label>
+          </div>
+          <span id="music-status" class="gh-music-status" role="status" hidden></span>
+        </div>
+        <button id="filter-toggle" class="gh-control" type="button" aria-expanded="false" aria-controls="link-filter-panel">
+          <i class="bi bi-filter" aria-hidden="true"></i> Filter
+        </button>
+        <div id="link-filter-panel" class="gh-filter-panel" hidden>
+          <label for="link-filter">Filtrér links</label>
+          <input id="link-filter" class="gh-search-input" type="search" placeholder="Navn, beskrivelse eller sektion...">
+          <button id="filter-clear" class="gh-control" type="button">Nulstil</button>
+          <span id="filter-status" role="status"></span>
+        </div>
+        <label class="gh-favourites-only">
+          <input id="favourites-only" type="checkbox">
+          Vis kun favoritter
+        </label>
+      </div>
     </div>
-    <span id="music-status" class="gh-music-status" role="status" hidden></span>
   </header>
 
   <div class="gh-search">
@@ -42,19 +64,6 @@
       <form action="https://duckduckgo.com/" method="get" target="_blank">
         <input class="gh-search-input" type="search" name="q" placeholder="Søg med DuckDuckGo..." required autofocus>
       </form>
-      <button id="filter-toggle" class="gh-control" type="button" aria-expanded="false" aria-controls="link-filter-panel">
-        <i class="bi bi-filter" aria-hidden="true"></i> Filter
-      </button>
-      <label class="gh-favourites-only">
-        <input id="favourites-only" type="checkbox">
-        Vis kun favoritter
-      </label>
-    </div>
-    <div id="link-filter-panel" class="gh-filter-panel" hidden>
-      <label for="link-filter">Filtrér links</label>
-      <input id="link-filter" class="gh-search-input" type="search" placeholder="Navn, beskrivelse eller sektion...">
-      <button id="filter-clear" class="gh-control" type="button">Nulstil</button>
-      <span id="filter-status" role="status"></span>
     </div>
   </div>
 

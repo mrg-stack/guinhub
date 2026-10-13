@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const menuToggle = document.getElementById('menu-toggle');
+  const settingsPanel = document.getElementById('settings-panel');
+  const menu = menuToggle.closest('.gh-menu');
+  function setMenuOpen(open) {
+    settingsPanel.hidden = !open;
+    menuToggle.setAttribute('aria-expanded', String(open));
+  }
+  menuToggle.addEventListener('click', () => setMenuOpen(settingsPanel.hidden));
+  document.addEventListener('click', event => {
+    if (!menu.contains(event.target)) setMenuOpen(false);
+  });
+  menu.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !settingsPanel.hidden) {
+      event.preventDefault();
+      setMenuOpen(false);
+      menuToggle.focus();
+    }
+  });
+
   const status = document.getElementById('portal-status');
   function reportStorageError(error) {
     console.error('Unable to save or restore portal preferences:', error);
@@ -266,6 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   filterPanel.addEventListener('keydown', event => {
     if (event.key === 'Escape') {
+      event.stopPropagation();
+      event.preventDefault();
       filterToggle.click();
       filterToggle.focus();
     }

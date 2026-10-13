@@ -19,7 +19,8 @@ It provides quick links to important tools and resources for both **teachers** a
 
 - **Utilities**
   - DuckDuckGo search bar
-  - Separate Filter panel for finding portal links by name, description, or section; Escape closes it
+  - Top-right hamburger opens a compact settings pane with a directly accessible theme selector, Filter, and “Vis kun favoritter”; Escape or clicking outside closes the pane
+  - Filter panel inside the menu for finding portal links by name, description, or section; Escape closes it
   - Star buttons add or remove browser-local favourites in a dedicated shortcuts row
   - Always-visible Favorites handles support mouse/touch dragging and arrow-key reordering; the order is saved in the current browser
   - “Vis kun favoritter” hides all other link sections, including their headings, without changing their saved open/closed state; the checkbox choice persists across reloads in the current browser
