@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
+  function trackEvent(name, data) {
+    if (location.hostname !== 'mrg-stack.github.io' || !window.umami?.track) return;
+    window.umami.track(name, data)?.catch(error => {
+      console.warn('Unable to send portal analytics event:', error);
+    });
+  }
+  let activeTheme = document.documentElement.dataset.themeId;
+  if (activeTheme) trackEvent('theme-active', { theme: activeTheme });
+  const themeObserver = new MutationObserver(() => {
+    const theme = document.documentElement.dataset.themeId;
+    if (!theme || theme === activeTheme) return;
+    trackEvent(activeTheme ? 'theme-changed' : 'theme-active', { theme });
+    activeTheme = theme;
+  });
+  themeObserver.observe(document.documentElement, {
+    attributes: true, attributeFilter: ['data-theme-id']
+  });
+
   const menuToggle = document.getElementById('menu-toggle');
   const settingsPanel = document.getElementById('settings-panel');
   const menu = menuToggle.closest('.gh-menu');
@@ -121,9 +139,20 @@ document.addEventListener('DOMContentLoaded', () => {
     return {
       card, url: link.getAttribute('href'),
       title: card.querySelector('.link-card-title').textContent,
+      section: link.closest('.collapsible-content').id,
       search: normalise(`${link.textContent} ${section.querySelector('.gh-section-title').textContent} ${card.closest('.e25-column')?.querySelector('h3')?.textContent || ''}`)
     };
   });
+
+  function trackLinkClick(event) {
+    if (event.type === 'auxclick' && event.button !== 1) return;
+    const link = event.target.closest('.link-card a');
+    if (!link) return;
+    const entry = entries.find(entry => entry.url === link.getAttribute('href'));
+    if (entry) trackEvent('link-click', { link: entry.title, section: entry.section });
+  }
+  document.addEventListener('click', trackLinkClick);
+  document.addEventListener('auxclick', trackLinkClick);
 
   function addFavouriteButton(card, entry) {
     const button = document.createElement('button');
@@ -140,6 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const inFavourites = card.parentElement === favouritesGrid;
       if (favourites.has(entry.url)) favourites.delete(entry.url);
       else favourites.add(entry.url);
+      trackEvent(favourites.has(entry.url) ? 'favourite-added' : 'favourite-removed',
+        { link: entry.title, section: entry.section });
       savePreference(favouriteKey, [...favourites]);
       renderFavourites();
       applyFilter();

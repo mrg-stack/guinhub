@@ -42,6 +42,22 @@ It provides quick links to important tools and resources for both **teachers** a
 
 Favourites and expanded sections are stored only in the current browser. The current semester and its roles start expanded on a first visit. Filtering temporarily reveals matching semester links without changing saved expansion preferences. Storage errors are reported on the page.
 
+## Analytics
+
+Umami Cloud tracks pageviews on `mrg-stack.github.io`. The tracking script and custom events are restricted to that hostname so local previews do not send analytics events. Page URL query strings and fragments are excluded.
+
+Custom events in the Umami dashboard:
+
+| Event | Properties | Meaning |
+| --- | --- | --- |
+| `link-click` | `link`, `section` | Shortcut activation, including favourites, keyboard activation, and middle-clicks |
+| `favourite-added` | `link`, `section` | A shortcut was added to favourites |
+| `favourite-removed` | `link`, `section` | A shortcut was removed from favourites |
+| `theme-active` | `theme` | Active theme once per page load, including restored preferences |
+| `theme-changed` | `theme` | Active theme changed, including the special Canada theme |
+
+Custom properties contain only shortcut titles, section IDs, and theme IDs, not destination URLs, email addresses, names, search text, or the saved favourites list. Favourite events measure changes, not the number of people currently favouriting a shortcut; existing favourites are not uploaded. Links with zero clicks will not appear in event reports. Analytics blockers may prevent collection; portal functionality does not depend on analytics being available.
+
 ## Link checks
 
 [Check public links](.github/workflows/check-links.yml) runs weekly, on relevant changes, and manually through GitHub Actions. Run it locally with Node.js 22 or newer:
