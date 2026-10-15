@@ -50,11 +50,13 @@ Custom events in the Umami dashboard:
 
 | Event | Properties | Meaning |
 | --- | --- | --- |
-| `link-click` | `link`, `section` | Shortcut activation, including favourites, keyboard activation, and middle-clicks |
-| `favourite-added` | `link`, `section` | A shortcut was added to favourites |
-| `favourite-removed` | `link`, `section` | A shortcut was removed from favourites |
-| `theme-active` | `theme` | Active theme once per page load, including restored preferences |
-| `theme-changed` | `theme` | Active theme changed, including the special Canada theme |
+| `link-click: Outlook [office-links]` | `link`, `section` | Shortcut activation, including favourites, keyboard activation, and middle-clicks |
+| `favourite-added: Outlook [office-links]` | `link`, `section` | A shortcut was added to favourites |
+| `favourite-removed: Outlook [office-links]` | `link`, `section` | A shortcut was removed from favourites |
+| `theme-active: vinyl-lounge` | `theme` | Active theme once per page load, including restored preferences |
+| `theme-changed: cobalt-coral` | `theme` | Active theme changed, including the special Canada theme |
+
+Event names include the item so counts can be compared directly in the dashboard's Events list without opening property breakdowns. The names above are examples; each shortcut/theme has its own event. Section IDs distinguish identically named shortcuts in different semesters. Older action-only events remain in historical data and are not renamed.
 
 Custom properties contain only shortcut titles, section IDs, and theme IDs, not destination URLs, email addresses, names, search text, or the saved favourites list. Favourite events measure changes, not the number of people currently favouriting a shortcut; existing favourites are not uploaded. Links with zero clicks will not appear in event reports. Analytics blockers may prevent collection; portal functionality does not depend on analytics being available.
 

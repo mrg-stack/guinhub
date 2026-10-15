@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   function trackEvent(name, data) {
     if (location.hostname !== 'mrg-stack.github.io' || !window.umami?.track) return;
-    window.umami.track(name, data)?.catch(error => {
+    const item = data.link ? `${data.link} [${data.section}]` : data.theme;
+    window.umami.track(`${name}: ${item}`, data)?.catch(error => {
       console.warn('Unable to send portal analytics event:', error);
     });
   }
