@@ -354,11 +354,11 @@ body {
   cursor: pointer;
 }
 
-.gh-section-toggle .bi {
+.gh-section-toggle > .bi-chevron-right {
   transition: transform 150ms ease-out;
 }
 
-.gh-section-toggle[aria-expanded="true"] i {
+.gh-section-toggle[aria-expanded="true"] > .bi-chevron-right {
   transform: rotate(90deg);
 }
 
@@ -442,7 +442,7 @@ body {
   justify-content: space-between;
 }
 
-.page-wrapper > .gh-section > .gh-section-header .gh-section-toggle .bi {
+.page-wrapper > .gh-section > .gh-section-header .gh-section-toggle > .bi-chevron-right {
   order: 1;
   font-size: 0.8rem;
   opacity: 0.7;
@@ -751,6 +751,11 @@ a:hover {
   text-decoration: none;
   color: inherit;
   width: 100%;
+}
+
+.link-card a[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 /* Icon like the old version */

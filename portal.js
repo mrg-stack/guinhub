@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chevron = document.createElement('i');
     chevron.className = 'bi bi-chevron-right';
     chevron.setAttribute('aria-hidden', 'true');
-    button.append(chevron, document.createTextNode(title.textContent));
+    button.append(chevron, ...title.childNodes);
     title.replaceChildren(button);
     const entry = { button, content };
     collapsibles.push(entry);
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function trackLinkClick(event) {
     if (event.type === 'auxclick' && event.button !== 1) return;
     const link = event.target.closest('.link-card a');
-    if (!link) return;
+    if (!link?.hasAttribute('href')) return;
     const entry = entries.find(entry => entry.url === link.getAttribute('href'));
     if (entry) trackEvent('link-click', { link: entry.title, section: entry.section });
   }
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     favouritesGrid.replaceChildren();
     entries.forEach(entry => {
       entry.card.querySelector('.gh-favourite')?.remove();
-      addFavouriteButton(entry.card, entry);
+      if (entry.url) addFavouriteButton(entry.card, entry);
     });
     favourites.forEach(url => {
       const entry = entries.find(entry => entry.url === url);
