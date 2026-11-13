@@ -20,6 +20,7 @@ It provides quick links to important tools and resources for both **teachers** a
 - **Utilities**
   - DuckDuckGo search bar
   - Top-right hamburger opens a compact settings pane with a directly accessible theme selector, Filter, and “Vis kun favoritter”; Escape or clicking outside closes the pane
+  - Vintage OS themes for Early Internet '97 and Mac OS 7, with period-inspired desktop layouts and classic web badges
   - Filter panel inside the menu for finding portal links by name, description, or section; Escape closes it
   - Star buttons add or remove browser-local favourites in a dedicated shortcuts row
   - Always-visible Favorites handles support mouse/touch dragging and arrow-key reordering; the order is saved in the current browser
@@ -35,6 +36,7 @@ It provides quick links to important tools and resources for both **teachers** a
 - [index.html](index.html) → Main web portal page
 - [index.css](index.css) → Theme and layout styling
 - [portal.js](portal.js) → Link filtering, favourites, and semester preferences
+- [assets/netscape-icon.svg](assets/netscape-icon.svg) → Public-domain Netscape Navigator icon from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Netscape_icon.svg)
 - Uses:
   - **Bootstrap Icons** via CDN
   - **System fonts**

@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const favourites = new Set(readPreference(favouriteKey,
     value => Array.isArray(value) && value.every(url => typeof url === 'string'), []));
   const cards = [...document.querySelectorAll('.link-card')];
-  const sections = [...document.querySelectorAll('.page-wrapper > section:not(#favourites-section)')];
+  const sections = [...document.querySelectorAll('.retro-groups > section:not(#favourites-section)')];
   const favouritesGrid = document.getElementById('favourites-grid');
   const favouritesSection = document.getElementById('favourites-section');
   const favouritesEmpty = document.getElementById('favourites-empty');

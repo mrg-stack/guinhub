@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="index.css?v=20261013a">
+  <link rel="stylesheet" href="index.css?v=20261113g">
   <script defer src="https://cloud.umami.is/script.js" data-website-id="c620a982-fd66-4bbd-974a-bf7b0baa1614" data-domains="mrg-stack.github.io" data-exclude-search="true" data-exclude-hash="true"></script>
-  <script defer src="portal.js?v=20261015b"></script>
+  <script defer src="portal.js?v=20261113a"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.28/build/Midi.js"></script>
 </head>
 
@@ -18,8 +18,8 @@
   <header class="gh-header">
     <div class="gh-title-row">
       <div>
-        <h1 id="gh-title" class="gh-title">GUINhub</h1>
-        <p class="gh-tagline">Din genvej til alt Økonomi &amp; IT</p>
+        <h1 id="gh-title" class="gh-title">Program Manager</h1>
+        <p class="gh-tagline">GUINhub — Din genvej til alt Økonomi &amp; IT</p>
       </div>
     </div>
     <div class="gh-menu">
@@ -60,6 +60,36 @@
     </div>
   </header>
 
+  <nav class="retro-menu-bar" aria-label="Program Manager menu">
+    <span data-windows-menu>File</span>
+    <span data-windows-menu>Options</span>
+    <span data-windows-menu>Window</span>
+    <span data-windows-menu>Help</span>
+    <span data-mac-menu>◈</span>
+    <span data-mac-menu>File</span>
+    <span data-mac-menu>Edit</span>
+    <span data-mac-menu>View</span>
+    <span data-mac-menu>Special</span>
+  </nav>
+
+  <div class="retro-welcome">
+    <div class="retro-marquee" role="img" aria-label="Welcome to GUINhub! The internet is yours to explore!">
+      <span aria-hidden="true">★ WELCOME TO GUINHUB! ★ THE INTERNET IS YOURS TO EXPLORE! ★ WELCOME TO GUINHUB! ★ THE INTERNET IS YOURS TO EXPLORE! ★</span>
+    </div>
+    <div class="retro-badges">
+      <a class="retro-mail-button" href="mailto:guin@ek.dk">
+        <span class="retro-envelope" aria-hidden="true">✉</span>
+        <span>EMAIL ME!</span>
+      </a>
+      <span class="retro-under-construction">[!] UNDER CONSTRUCTION [!]</span>
+      <span class="retro-visitor" aria-label="Decorative visitor counter">VISITOR #<strong>000097</strong></span>
+      <span class="retro-browser-badge">
+        <img src="assets/netscape-icon.svg" alt="" width="24" height="24">
+        BEST VIEWED IN NETSCAPE NAVIGATOR
+      </span>
+    </div>
+  </div>
+
   <div class="gh-search">
     <div class="gh-search-row">
       <form action="https://duckduckgo.com/" method="get" target="_blank">
@@ -69,6 +99,7 @@
   </div>
 
   <p id="portal-status" role="status" hidden></p>
+  <div class="retro-groups">
   <section id="favourites-section" class="gh-section gh-section--compact-grid" hidden>
     <div class="gh-section-header">
       <h2 class="gh-section-title">Favoritter</h2>
@@ -896,6 +927,7 @@
       </div>
     </div>
   </section>
+  </div>
 
   <footer class="gh-footer">
     
@@ -922,7 +954,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const THEME_STORAGE_KEY = 'guinhub-theme-choice';
-  const DEFAULT_THEME_ID = 'vinyl-lounge';
+  const DEFAULT_THEME_ID = 'early-internet-97';
   const canadaTheme = {
     id: 'secret-canada',
     name: 'Canada',
@@ -939,6 +971,36 @@ document.addEventListener('DOMContentLoaded', () => {
     onPrimary: '#FFFFFF'
   };
   const themes = [
+    {
+      id: 'early-internet-97',
+      name: "Early Internet '97",
+      mode: 'dark',
+      primary: '#000080',
+      accent: '#000080',
+      support: '#008080',
+      atmosphere: '#008080',
+      background: '#008080',
+      surface: '#C0C0C0',
+      surfaceSoft: '#D4D0C8',
+      text: '#000000',
+      muted: '#404040',
+      onPrimary: '#FFFFFF'
+    },
+    {
+      id: 'mac-os-7',
+      name: 'Mac OS 7',
+      mode: 'light',
+      primary: '#000000',
+      accent: '#000000',
+      support: '#808080',
+      atmosphere: '#FFFFFF',
+      background: '#FFFFFF',
+      surface: '#E5E5E5',
+      surfaceSoft: '#D5D5D5',
+      text: '#000000',
+      muted: '#404040',
+      onPrimary: '#FFFFFF'
+    },
     {
       id: 'summer-99',
       name: "Summer '99",
@@ -1580,11 +1642,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeSelect = document.getElementById('theme-select');
     if (!themeSelect) return;
 
-    ['light', 'dark', 'seasonal'].forEach(category => {
+    ['light', 'dark', 'vintage', 'seasonal'].forEach(category => {
       const group = document.createElement('optgroup');
-      group.label = { seasonal: 'Seasonal', light: 'Light themes', dark: 'Dark themes' }[category];
+      group.label = {
+        seasonal: 'Seasonal',
+        vintage: 'Vintage OS',
+        light: 'Light themes',
+        dark: 'Dark themes'
+      }[category];
       themes.filter(theme => {
-        const themeCategory = seasonalEffects[theme.id] ? 'seasonal' : theme.mode;
+        const themeCategory = seasonalEffects[theme.id]
+          ? 'seasonal'
+          : ['early-internet-97', 'mac-os-7'].includes(theme.id)
+            ? 'vintage'
+            : theme.mode;
         return themeCategory === category;
       }).forEach(theme => {
         const option = document.createElement('option');
