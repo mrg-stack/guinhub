@@ -44,6 +44,8 @@ It provides quick links to important tools and resources for both **teachers** a
 
 Favourites and expanded sections are stored only in the current browser. The current semester and its roles start expanded on a first visit. Filtering temporarily reveals matching semester links without changing saved expansion preferences. Storage errors are reported on the page.
 
+The theme picker remembers explicit choices in the current browser and restores both the selected option and the page theme when reopening a session or returning through browser history. Vinyl Lounge is the default when no valid saved choice is available; Vintage OS themes remain selectable. Default choices are not automatically saved.
+
 The upcoming **2. Sem ØIT-GBG-DA-E26** section follows HR and mirrors the E25 shared links, Hold A/B groups, and semester roles. It is marked WIP and starts collapsed. Pending links are inactive and cannot be favourited; only GUINark is linked, opening the F27 planning workbook in desktop Excel. Current semester role assignments are listed; unassigned roles remain blank.
 
 ## Analytics

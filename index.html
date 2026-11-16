@@ -18,8 +18,8 @@
   <header class="gh-header">
     <div class="gh-title-row">
       <div>
-        <h1 id="gh-title" class="gh-title">Program Manager</h1>
-        <p class="gh-tagline">GUINhub — Din genvej til alt Økonomi &amp; IT</p>
+        <h1 id="gh-title" class="gh-title">GUINhub</h1>
+        <p class="gh-tagline">Din genvej til alt Økonomi &amp; IT</p>
       </div>
     </div>
     <div class="gh-menu">
@@ -954,7 +954,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const THEME_STORAGE_KEY = 'guinhub-theme-choice';
-  const DEFAULT_THEME_ID = 'early-internet-97';
+  const DEFAULT_THEME_ID = 'vinyl-lounge';
   const canadaTheme = {
     id: 'secret-canada',
     name: 'Canada',
@@ -1630,10 +1630,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function reportThemeStorageError(error) {
+    console.error('Unable to save or restore theme preference:', error);
+    const status = document.getElementById('portal-status');
+    status.hidden = false;
+    status.textContent = 'Dine valg kan ikke gemmes eller gendannes i denne browser.';
+  }
+
   function getInitialThemeId() {
-    const savedThemeId = localStorage.getItem(THEME_STORAGE_KEY);
-    if (savedThemeId && themes.some(theme => theme.id === savedThemeId)) {
-      return savedThemeId;
+    try {
+      const savedThemeId = localStorage.getItem(THEME_STORAGE_KEY);
+      if (savedThemeId && themes.some(theme => theme.id === savedThemeId)) {
+        return savedThemeId;
+      }
+    } catch (error) {
+      reportThemeStorageError(error);
     }
     return DEFAULT_THEME_ID;
   }
@@ -1666,15 +1677,25 @@ document.addEventListener('DOMContentLoaded', () => {
       themeSelect.appendChild(group);
     });
 
-    const initialThemeId = getInitialThemeId();
-    themeSelect.value = initialThemeId;
-    applyTheme(getThemeById(initialThemeId));
-    localStorage.setItem(THEME_STORAGE_KEY, initialThemeId);
+    function restoreTheme() {
+      const themeId = getInitialThemeId();
+      themeSelect.value = themeId;
+      if (document.documentElement.dataset.themeId !== themeId) {
+        applyTheme(getThemeById(themeId));
+      }
+    }
+
+    restoreTheme();
+    window.addEventListener('pageshow', restoreTheme);
 
     themeSelect.addEventListener('change', () => {
       const selectedThemeId = themeSelect.value;
       applyTheme(getThemeById(selectedThemeId));
-      localStorage.setItem(THEME_STORAGE_KEY, selectedThemeId);
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, selectedThemeId);
+      } catch (error) {
+        reportThemeStorageError(error);
+      }
     });
   }
 
