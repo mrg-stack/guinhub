@@ -36,9 +36,11 @@ It provides quick links to important tools and resources for both **teachers** a
 - [index.html](index.html) → Main web portal page
 - [index.css](index.css) → Theme and layout styling
 - [portal.js](portal.js) → Link filtering, favourites, and semester preferences
+- [themes.js](themes.js) → Theme preferences, seasonal effects, and opt-in music
+- [assets/icons.css](assets/icons.css) → Local SVG subset of the Bootstrap Icons used by the portal
 - [assets/netscape-icon.svg](assets/netscape-icon.svg) → Public-domain Netscape Navigator icon from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Netscape_icon.svg)
 - Uses:
-  - **Bootstrap Icons** via CDN
+  - **Bootstrap Icons** (local SVG subset, MIT licensed)
   - **System fonts**
   - **Static HTML, CSS, and JavaScript** with no backend
 
@@ -77,6 +79,14 @@ node --test tests/check-links.test.mjs
 
 The checker tests an explicit allowlist of public-resource hosts. Login-dependent services (including Office, EK internal systems, and mail/desktop deep links) require manual verification. HTTP 401, 403, and 429 responses are labelled for review rather than treated as broken links; other unsuccessful responses and network failures fail the check. Results appear in the workflow summary. Update the allowlist in [scripts/check-links.mjs](scripts/check-links.mjs) when adding new public-resource hosts.
 
+## Front-end assets
+
+Theme/music code is served from [themes.js](themes.js) so it can be cached separately from the page. Bump its query-string version in [index.html](index.html) when changing it.
+
+The icon stylesheet embeds only the SVGs referenced by [index.html](index.html) and [portal.js](portal.js), including dynamically created favourite and reorder controls. After adding or removing an icon, run `node scripts/build-icons.mjs` (Node.js 22+ and internet access), commit the regenerated stylesheet and license, and bump its stylesheet version in [index.html](index.html). The generator downloads Bootstrap Icons 1.11.1; the site itself makes no icon CDN or font requests. Its MIT license is included in [assets/bootstrap-icons-LICENSE.txt](assets/bootstrap-icons-LICENSE.txt).
+
+Run the front-end regression tests with `node --test tests/*.test.mjs`.
+
 ---
 
 ## 🚀 Hosting on GitHub Pages 
@@ -90,4 +100,4 @@ https://mrg-stack.github.io/guinhub/
 - Christmas '99: [Jingle Bells](midi/jingle-bells.mid), a new bell arrangement of the public-domain melody by James Lord Pierpont (1857).
 - Halloween '99: [Dies irae](midi/dies-irae.mid), a new organ arrangement of the opening phrases of the public-domain medieval Gregorian chant. [Melody and historical background](https://en.wikipedia.org/wiki/Dies_irae#13th-century_Gregorian_chant).
 
-The seasonal arrangements other than O Canada were generated for this site. Playback uses the pinned `@tonejs/midi` parser and Web Audio synthesis. Embedded base64 copies in [index.html](index.html) allow playback from a local file URL; keep them byte-identical to the MIDI files when changing the music. Music is opt-in and stops when changing themes. Seasonal effects respect reduced-motion preferences.
+The seasonal arrangements other than O Canada were generated for this site. Playback uses Web Audio synthesis and the pinned `@tonejs/midi` parser, downloaded only when music is enabled. Concurrent requests share the same download, and failed downloads can be retried by enabling music again; loading and playback errors appear beside the music control. Embedded base64 copies in [themes.js](themes.js) allow the MIDI data to be read from a local file URL; keep them byte-identical to the MIDI files when changing the music. The parser download still requires an internet connection. Music is opt-in and stops when changing themes. Seasonal effects respect reduced-motion preferences.

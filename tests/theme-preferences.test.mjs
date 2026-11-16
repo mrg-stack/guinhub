@@ -4,7 +4,7 @@ import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+const script = readFileSync(new URL('../themes.js', import.meta.url), 'utf8');
 
 function openPage(storage = new Map(), { failRead = false, failWrite = false } = {}) {
   class Element extends EventTarget {
