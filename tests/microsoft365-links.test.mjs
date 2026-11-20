@@ -10,6 +10,11 @@ runInNewContext(script, context);
 
 const destinations = href => context.getMicrosoft365Destinations(href);
 
+test('cards without links do not interrupt portal initialization', () => {
+  assert.equal(destinations(null), null);
+  assert.equal(destinations(undefined), null);
+});
+
 test('Microsoft 365 toggle is present and defaults to desktop links', () => {
   assert.match(html, /id="m365-browser" type="checkbox"/);
   assert.doesNotMatch(html, /id="m365-browser" type="checkbox" checked/);

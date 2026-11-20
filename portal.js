@@ -1,4 +1,5 @@
 function getMicrosoft365Destinations(href) {
+  if (typeof href !== 'string') return null;
   const officeDocument = href.match(/^ms-(word|excel|powerpoint):ofe\|u\|(.+)$/i);
   if (officeDocument) {
     const browserUrl = new URL(officeDocument[2]);
@@ -186,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const favouriteKey = 'guinhub-favourites';
   const favourites = new Set(readPreference(favouriteKey,
     value => Array.isArray(value) && value.every(url => typeof url === 'string'), []));
-  const cards = [...document.querySelectorAll('.link-card')];
+  const cards = [...document.querySelectorAll('.link-card')]
+    .filter(card => card.querySelector('a'));
   const sections = [...document.querySelectorAll('.retro-groups > section:not(#favourites-section)')];
   const favouritesGrid = document.getElementById('favourites-grid');
   const favouritesSection = document.getElementById('favourites-section');
@@ -198,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const normalise = text => text.toLocaleLowerCase('da').normalize('NFD').replace(/\p{M}/gu, '');
   const linkKey = link => link.dataset.microsoft365Key || link.getAttribute('href');
   function configureMicrosoft365Link(link) {
-    const destinations = getMicrosoft365Destinations(link.getAttribute('href'));
+    const destinations = getMicrosoft365Destinations(link?.getAttribute('href'));
     if (!destinations) return;
     link.dataset.microsoft365Key = link.dataset.microsoft365Key || link.getAttribute('href');
     link.dataset.microsoft365Browser = destinations.browser;
