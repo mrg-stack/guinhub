@@ -14,6 +14,7 @@ test('Microsoft 365 toggle is present and defaults to desktop links', () => {
   assert.match(html, /id="m365-browser" type="checkbox"/);
   assert.doesNotMatch(html, /id="m365-browser" type="checkbox" checked/);
   assert.match(html, /Office 365-apps/);
+  assert.doesNotMatch(html, /(?:link-card-title|link-card-sub)">[^<]*Desktop/);
 });
 
 test('Teams links support desktop and browser destinations', () => {
