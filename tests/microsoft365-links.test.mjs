@@ -56,7 +56,7 @@ test('Office app launchers and existing document links can switch destinations',
   assert.deepEqual(
     JSON.parse(JSON.stringify(destinations(document))),
     {
-      browser: 'https://example.sharepoint.com/sites/team/plan.xlsx?web=1',
+      browser: 'https://example.sharepoint.com/:x:/r/sites/team/plan.xlsx?web=1',
       desktop: document
     }
   );
@@ -70,6 +70,18 @@ test('existing SharePoint document queries are preserved when browser mode is se
     result.browser,
     'https://tenant.sharepoint.com/:x:/r/sites/team/Gruppe%20ark.xlsx?d=123&csf=1&e=abc&web=1'
   );
+  assert.doesNotMatch(result.browser, /^ms-/);
   assert.equal(new URL(result.browser).searchParams.get('web'), '1');
+  assert.equal(result.desktop, document);
+});
+
+test('direct OneDrive document paths use the explicit Excel web viewer', () => {
+  const document =
+    'ms-excel:ofe|u|https://tenant-my.sharepoint.com/personal/user/Documents/Shared/Gruppeark.xlsx';
+  const result = destinations(document);
+  assert.equal(
+    result.browser,
+    'https://tenant-my.sharepoint.com/:x:/r/personal/user/Documents/Shared/Gruppeark.xlsx?web=1'
+  );
   assert.equal(result.desktop, document);
 });

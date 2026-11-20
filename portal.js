@@ -2,6 +2,15 @@ function getMicrosoft365Destinations(href) {
   const officeDocument = href.match(/^ms-(word|excel|powerpoint):ofe\|u\|(.+)$/i);
   if (officeDocument) {
     const browserUrl = new URL(officeDocument[2]);
+    const appPath = {
+      word: '/:w:/r',
+      excel: '/:x:/r',
+      powerpoint: '/:p:/r'
+    }[officeDocument[1].toLowerCase()];
+    if (/^(?:sharepoint\.com|.+\.sharepoint\.com)$/i.test(browserUrl.hostname)
+      && !/^\/:(?:w|x|p):\/r\//i.test(browserUrl.pathname)) {
+      browserUrl.pathname = `${appPath}${browserUrl.pathname}`;
+    }
     browserUrl.searchParams.set('web', '1');
     return { browser: browserUrl.href, desktop: href };
   }
@@ -200,6 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
       link.setAttribute('href', microsoft365BrowserMode
         ? link.dataset.microsoft365Browser
         : link.dataset.microsoft365Desktop);
+      if (microsoft365BrowserMode) link.target = '_blank';
+      else link.removeAttribute('target');
     });
   }
   cards.forEach(card => configureMicrosoft365Link(card.querySelector('a')));
@@ -224,6 +235,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   document.addEventListener('click', trackLinkClick);
   document.addEventListener('auxclick', trackLinkClick);
+  document.addEventListener('click', event => {
+    if (!microsoft365BrowserMode || (event.button && event.button !== 0)) return;
+    const link = event.target.closest('.link-card a[data-microsoft365-browser]');
+    if (!link) return;
+    event.preventDefault();
+    window.open(link.dataset.microsoft365Browser, '_blank', 'noopener,noreferrer');
+  });
 
   function addFavouriteButton(card, entry) {
     const button = document.createElement('button');
