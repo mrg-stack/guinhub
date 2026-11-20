@@ -1,7 +1,9 @@
 function getMicrosoft365Destinations(href) {
   const officeDocument = href.match(/^ms-(word|excel|powerpoint):ofe\|u\|(.+)$/i);
   if (officeDocument) {
-    return { browser: officeDocument[2], desktop: href };
+    const browserUrl = new URL(officeDocument[2]);
+    browserUrl.searchParams.set('web', '1');
+    return { browser: browserUrl.href, desktop: href };
   }
 
   let browser = href;

@@ -55,8 +55,20 @@ test('Office app launchers and existing document links can switch destinations',
   assert.deepEqual(
     JSON.parse(JSON.stringify(destinations(document))),
     {
-      browser: 'https://example.sharepoint.com/sites/team/plan.xlsx',
+      browser: 'https://example.sharepoint.com/sites/team/plan.xlsx?web=1',
       desktop: document
     }
   );
+});
+
+test('existing SharePoint document queries are preserved when browser mode is selected', () => {
+  const document =
+    'ms-excel:ofe|u|https://tenant.sharepoint.com/:x:/r/sites/team/Gruppe%20ark.xlsx?d=123&csf=1&e=abc';
+  const result = destinations(document);
+  assert.equal(
+    result.browser,
+    'https://tenant.sharepoint.com/:x:/r/sites/team/Gruppe%20ark.xlsx?d=123&csf=1&e=abc&web=1'
+  );
+  assert.equal(new URL(result.browser).searchParams.get('web'), '1');
+  assert.equal(result.desktop, document);
 });
