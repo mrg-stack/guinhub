@@ -249,7 +249,7 @@ body {
   cursor: pointer;
 }
 
-.gh-favourites-only {
+.gh-settings-checkbox {
   display: inline-flex;
   align-items: center;
   gap: 6px;

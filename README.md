@@ -19,7 +19,7 @@ It provides quick links to important tools and resources for both **teachers** a
 
 - **Utilities**
   - DuckDuckGo search bar
-  - Top-right hamburger opens a compact settings pane with a directly accessible theme selector, Filter, and “Vis kun favoritter”; Escape or clicking outside closes the pane
+  - Top-right hamburger opens a compact settings pane with a directly accessible theme selector, a persistent browser/desktop toggle for Microsoft 365 apps, Filter, and “Vis kun favoritter”; Escape or clicking outside closes the pane
   - Vintage OS themes for Early Internet '97 and Mac OS 7, with period-inspired desktop layouts and classic web badges
   - Filter panel inside the menu for finding portal links by name, description, or section; Escape closes it
   - Star buttons add or remove browser-local favourites in a dedicated shortcuts row
@@ -44,7 +44,7 @@ It provides quick links to important tools and resources for both **teachers** a
   - **System fonts**
   - **Static HTML, CSS, and JavaScript** with no backend
 
-Favourites and expanded sections are stored only in the current browser. The current semester and its roles start expanded on a first visit. Filtering temporarily reveals matching semester links without changing saved expansion preferences. Storage errors are reported on the page.
+Favourites, expanded sections, and the Microsoft 365 launch preference are stored only in the current browser. Microsoft 365 desktop apps are the default; Outlook, Office document, and Teams links switch to their browser destinations when enabled in the menu. The current semester and its roles start expanded on a first visit. Filtering temporarily reveals matching semester links without changing saved expansion preferences. Storage errors are reported on the page.
 
 The theme picker remembers explicit choices in the current browser and restores both the selected option and the page theme when reopening a session or returning through browser history. Vinyl Lounge is the default when no valid saved choice is available; Vintage OS themes remain selectable. Default choices are not automatically saved.
 

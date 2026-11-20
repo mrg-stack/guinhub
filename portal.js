@@ -1,3 +1,49 @@
+function getMicrosoft365Destinations(href) {
+  const officeDocument = href.match(/^ms-(word|excel|powerpoint):ofe\|u\|(.+)$/i);
+  if (officeDocument) {
+    return { browser: officeDocument[2], desktop: href };
+  }
+
+  let browser = href;
+  if (href.startsWith('msteams://https://') || href.startsWith('msteams://http://')) {
+    browser = href.replace(/^msteams:\/\//, '');
+  } else if (href.startsWith('msteams://')) {
+    browser = href.replace(/^msteams:\/\//, 'https://');
+  }
+
+  let url;
+  try {
+    url = new URL(browser);
+  } catch {
+    return null;
+  }
+
+  if (url.hostname === 'teams.microsoft.com') {
+    return {
+      browser,
+      desktop: `msteams://${url.host}${url.pathname}${url.search}${url.hash}`
+    };
+  }
+
+  if (url.hostname === 'outlook.office.com') {
+    if (/\/(?:mail\/deeplink\/compose|owa\/?$)/.test(url.pathname)) {
+      const recipients = url.searchParams.get('to');
+      return {
+        browser,
+        desktop: `ms-outlook://compose${recipients ? `?to=${encodeURIComponent(recipients)}` : ''}`
+      };
+    }
+    return { browser, desktop: 'ms-outlook://' };
+  }
+
+  const officeApp = url.pathname.match(/^\/launch\/(word|excel|powerpoint)$/);
+  if (url.hostname === 'www.office.com' && officeApp) {
+    return { browser, desktop: `ms-${officeApp[1]}:` };
+  }
+
+  return null;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   function trackEvent(name, data) {
     if (location.hostname !== 'mrg-stack.github.io' || !window.umami?.track) return;
@@ -74,6 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
     value => Array.isArray(value) && value.every(id => typeof id === 'string'),
     [...new Set([...previousOpenSections, ...sectionDefaults])]));
   const collapsibles = [];
+  const microsoft365Browser = document.getElementById('m365-browser');
+  const microsoft365BrowserKey = 'guinhub-m365-browser';
+  let microsoft365BrowserMode = readPreference(
+    microsoft365BrowserKey, value => typeof value === 'boolean', false);
+  microsoft365Browser.checked = microsoft365BrowserMode;
   const favouritesOnly = document.getElementById('favourites-only');
   const favouritesOnlyKey = 'guinhub-favourites-only';
   let favouritesOnlyMode = readPreference(favouritesOnlyKey, value => typeof value === 'boolean', false);
@@ -134,11 +185,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterPanel = document.getElementById('link-filter-panel');
   const filterStatus = document.getElementById('filter-status');
   const normalise = text => text.toLocaleLowerCase('da').normalize('NFD').replace(/\p{M}/gu, '');
+  const linkKey = link => link.dataset.microsoft365Key || link.getAttribute('href');
+  function configureMicrosoft365Link(link) {
+    const destinations = getMicrosoft365Destinations(link.getAttribute('href'));
+    if (!destinations) return;
+    link.dataset.microsoft365Key = link.dataset.microsoft365Key || link.getAttribute('href');
+    link.dataset.microsoft365Browser = destinations.browser;
+    link.dataset.microsoft365Desktop = destinations.desktop;
+  }
+  function applyMicrosoft365Mode() {
+    document.querySelectorAll('[data-microsoft365-browser]').forEach(link => {
+      link.setAttribute('href', microsoft365BrowserMode
+        ? link.dataset.microsoft365Browser
+        : link.dataset.microsoft365Desktop);
+    });
+  }
+  cards.forEach(card => configureMicrosoft365Link(card.querySelector('a')));
+  applyMicrosoft365Mode();
   const entries = cards.map(card => {
     const link = card.querySelector('a');
     const section = sections.find(section => section.contains(card));
     return {
-      card, url: link.getAttribute('href'),
+      card, url: linkKey(link),
       title: card.querySelector('.link-card-title').textContent,
       section: link.closest('.collapsible-content').id,
       search: normalise(`${link.textContent} ${section.querySelector('.gh-section-title').textContent} ${card.closest('.e25-column')?.querySelector('h3')?.textContent || ''}`)
@@ -149,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.type === 'auxclick' && event.button !== 1) return;
     const link = event.target.closest('.link-card a');
     if (!link?.hasAttribute('href')) return;
-    const entry = entries.find(entry => entry.url === link.getAttribute('href'));
+    const entry = entries.find(entry => entry.url === linkKey(link));
     if (entry) trackEvent('link-click', { link: entry.title, section: entry.section });
   }
   document.addEventListener('click', trackLinkClick);
@@ -198,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
       addDragHandle(clone, entry);
       favouritesGrid.append(clone);
     });
+    applyMicrosoft365Mode();
     updateFavouritesVisibility();
   }
   function moveFavourite(card, target) {
@@ -206,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
     favouritesGrid.insertBefore(card, forward ? target.nextSibling : target);
     favourites.clear();
     [...favouritesGrid.children].forEach(item => {
-      favourites.add(item.querySelector('a').getAttribute('href'));
+      favourites.add(linkKey(item.querySelector('a')));
     });
     savePreference(favouriteKey, [...favourites]);
     const position = [...favouritesGrid.children].indexOf(card) + 1;
@@ -283,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setExpanded(entry, !favouritesOnlyMode && (terms.length ? hasMatches : openSections.has(entry.content.id)));
     });
     [...favouritesGrid.children].forEach(card => {
-      const entry = entries.find(entry => entry.url === card.querySelector('a').getAttribute('href'));
+      const entry = entries.find(entry => entry.url === linkKey(card.querySelector('a')));
       card.hidden = entry.card.hidden;
     });
     updateFavouritesVisibility();
@@ -309,6 +378,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setFavouritesOnly(favouritesOnly.checked);
     if (favouritesOnlyMode) filter.value = '';
     applyFilter();
+  });
+  microsoft365Browser.addEventListener('change', () => {
+    microsoft365BrowserMode = microsoft365Browser.checked;
+    savePreference(microsoft365BrowserKey, microsoft365BrowserMode);
+    applyMicrosoft365Mode();
   });
   document.getElementById('filter-clear').addEventListener('click', () => {
     filter.value = '';
